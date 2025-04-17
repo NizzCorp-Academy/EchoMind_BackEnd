@@ -14,7 +14,9 @@ class JestReport {
   }
 
   onRunComplete(contexts, results) {
-    const filePath = path.resolve(__dirname, "./reports/report.json");
+    const date = new Date();
+    const filename = date.toDateString().replace(/\s+/g, "-") + "-test.json";
+    const filePath = path.resolve(__dirname, "./reports", filename);
     // const logFile = path.resolve(__dirname, "/jset-results.json");
     const jsonResult = JSON.parse(
       //   fs.readFileSync(logFile, "utf-8")
