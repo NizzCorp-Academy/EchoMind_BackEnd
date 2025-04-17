@@ -55,7 +55,9 @@ class MessageService {
     if (mongoose.isValidObjectId(chatId) === false) {
       throw new Error("Invalid chatId format");
     }
-    const messages = await MessageModle.find({ chatId });
+    const messages = await MessageModle.find({ chatId }).sort({
+      createdAt: 1,
+    });
     if (!messages) {
       throw new Error("No messages found for this chatId");
     }

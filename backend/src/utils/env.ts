@@ -24,3 +24,5 @@ export const getEnv = (name: string) => {
 export const PORT = getEnv("PORT");
 export const MONGO_URI = getEnv("MONGO_URI");
 export const JWT_SECRET = getEnv("JWT_SECRET");
+export const AI_ENDPOIND = getEnv("AI_ENDPOIND");
+export const AI_MODEL = getEnv("AI_MODEL");
