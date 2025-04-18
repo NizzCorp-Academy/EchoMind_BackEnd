@@ -2668,3 +2668,92 @@
   ],
   "wasInterrupted": false
 },
+{
+  "numFailedTestSuites": 0,
+  "numFailedTests": 0,
+  "numPassedTestSuites": 1,
+  "numPassedTests": 3,
+  "numPendingTestSuites": 0,
+  "numPendingTests": 0,
+  "numRuntimeErrorTestSuites": 0,
+  "numTodoTests": 0,
+  "numTotalTestSuites": 1,
+  "numTotalTests": 3,
+  "openHandles": [],
+  "snapshot": {
+    "added": 0,
+    "didUpdate": false,
+    "failure": false,
+    "filesAdded": 0,
+    "filesRemoved": 0,
+    "filesRemovedList": [],
+    "filesUnmatched": 0,
+    "filesUpdated": 0,
+    "matched": 0,
+    "total": 0,
+    "unchecked": 0,
+    "uncheckedKeysByFile": [],
+    "unmatched": 0,
+    "updated": 0
+  },
+  "startTime": 1744884989873,
+  "success": true,
+  "testResults": [
+    {
+      "assertionResults": [
+        {
+          "ancestorTitles": [
+            "Message Model"
+          ],
+          "duration": 124,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Message Model Should create a new user",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 4,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "Should create a new user"
+        },
+        {
+          "ancestorTitles": [
+            "Message Model"
+          ],
+          "duration": 2,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Message Model should  throw validation schema errors",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 4,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should  throw validation schema errors"
+        },
+        {
+          "ancestorTitles": [
+            "Message Model"
+          ],
+          "duration": 4,
+          "failureDetails": [],
+          "failureMessages": [],
+          "fullName": "Message Model should retun error if username is not provided",
+          "invocations": 1,
+          "location": null,
+          "numPassingAsserts": 1,
+          "retryReasons": [],
+          "status": "passed",
+          "title": "should retun error if username is not provided"
+        }
+      ],
+      "endTime": 1744884993618,
+      "message": "",
+      "name": "C:\\Users\\Nizz Corp\\Projects\\EchoMind\\backend\\src\\tests\\messageModle.test.ts",
+      "startTime": 1744884990124,
+      "status": "passed",
+      "summary": ""
+    }
+  ],
+  "wasInterrupted": false
+},
