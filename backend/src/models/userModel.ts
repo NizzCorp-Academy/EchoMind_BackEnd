@@ -5,6 +5,8 @@ interface UserDocument extends Document {
   username: string;
   email: string;
   password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 /**
@@ -16,12 +18,17 @@ interface UserDocument extends Document {
  * @version: 1.0.0
  *
  */
-const userSchema = new Schema<UserDocument>({
-  _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-});
+const userSchema = new Schema<UserDocument>(
+  {
+    _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
+    username: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 const UserModel = model<UserDocument>("User", userSchema);
 
