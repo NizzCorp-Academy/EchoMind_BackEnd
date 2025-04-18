@@ -4,6 +4,7 @@ import { JWT_SECRET } from "./env";
 
 type JwtPayload = {
   userId: string;
+  id: string;
 };
 
 /**
