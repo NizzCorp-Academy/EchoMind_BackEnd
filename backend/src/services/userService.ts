@@ -23,7 +23,7 @@ class UserService {
     if (isExist) {
       throw new Error("User already exists with this email");
     }
-    const hash = authUtil.hashPassword(password);
+    const hash = await authUtil.hashPassword(password);
     const user = await UserModel.create({
       username,
       email,

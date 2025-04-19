@@ -66,7 +66,7 @@ class AuthUtils {
       const decoded = jwt.verify(token, JWT_SECRET);
       return decoded as JwtPayload;
     } catch (error) {
-      return null;
+      throw error;
     }
   }
 }

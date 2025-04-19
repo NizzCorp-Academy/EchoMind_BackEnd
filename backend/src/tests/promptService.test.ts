@@ -28,7 +28,7 @@ describe("Prompt Service ", () => {
     console.log("Response ", response);
     expect(response).toBeDefined();
     expect(typeof response).toBe("string");
-  });
+  }, 1000000);
   it("should return a prompt completion", async () => {
     const prompt = "What is the capital of France?";
     const promptService = new PromptService();
@@ -36,7 +36,7 @@ describe("Prompt Service ", () => {
     console.log(response);
     expect(response).toBeDefined();
     expect(typeof response).toBe("string");
-  });
+  }, 1000000);
   it("shoud return a respose for the entire chat ", async () => {
     const chatId = new mongoose.Types.ObjectId().toString();
     await MessageModle.create({
@@ -59,5 +59,5 @@ describe("Prompt Service ", () => {
     console.log(response);
     expect(response).toBeDefined();
     expect(typeof response).toBe("string");
-  });
+  }, 1000000);
 });

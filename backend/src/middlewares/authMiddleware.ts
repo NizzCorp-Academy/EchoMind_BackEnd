@@ -13,24 +13,24 @@ import AuthUtils from "../utils/authUtil";
  * @param next express nextfunction for calling the next middleware
  * @return this funciton will return the req obj with the userId as the jwt payload
  */
-export const authenticatedRoute = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const authUtils = new AuthUtils();
-  try {
-    const token = req.cookies.jwt;
-    if (!token) {
-      throw new Error("token is not Provided");
+class AuthMiddlewares {
+  authenticatedRoute(req: Request, res: Response, next: NextFunction) {
+    const authUtils = new AuthUtils();
+    try {
+      const { token } = req.cookies.jwt;
+      if (!token) {
+        throw new Error("token is not Provided");
+      }
+      const decode = authUtils.verifyToken(token);
+      // if (decode === null) {
+      // throw new Error("invalid token");
+      // }
+      req.userId = decode.userId;
+      next();
+    } catch (error) {
+      next(error);
     }
-    const decode = authUtils.verifyToken(token);
-    if (!decode) {
-      throw new Error("invalid token");
-    }
-    req.userId = decode.userId;
-    next();
-  } catch (error) {
-    next(error);
   }
-};
+}
+
+export default AuthMiddlewares;

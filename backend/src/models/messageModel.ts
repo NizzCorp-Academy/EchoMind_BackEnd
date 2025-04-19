@@ -1,4 +1,4 @@
-import mongoose, { Document, model, Schema } from "mongoose";
+import mongoose, { Document, model, models, Schema } from "mongoose";
 
 interface MessageDocument extends Document {
   _id: mongoose.Types.ObjectId;
@@ -9,7 +9,7 @@ interface MessageDocument extends Document {
   updatedAt: Date;
 }
 
-const userSchema = new Schema<MessageDocument>(
+const messagSchema = new Schema<MessageDocument>(
   {
     _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
     chatId: {
@@ -25,6 +25,6 @@ const userSchema = new Schema<MessageDocument>(
   }
 );
 
-const MessageModle = model<MessageDocument>("User", userSchema);
+const MessageModle = model<MessageDocument>("Message", messagSchema);
 
 export default MessageModle;

@@ -1,18 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import UserService from "../services/userService";
 
-class UserControll{
-    async getUser (req:Request, res:Response, next:NextFunction) {
-        try {
-            const userId:string = req.body.userId;
-            const userService = new UserService();
-            const user = await userService.getUserById(userId);
-        
-            res.status(200).json(user);
-        } catch (error: any) {
-           next(error);
-        }
-    }
+class UserControll {
+  async getUser(userId: string) {
+    const userService = new UserService();
+    throw new Error("random error");
+    const user = await userService.getUserById(userId);
+    return user;
+  }
 }
 
 export default UserControll;

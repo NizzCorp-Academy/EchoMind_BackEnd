@@ -21,6 +21,7 @@ const userSchema = new Schema<MessageDocument>(
   }
 );
 
-const MessageModle = model<MessageDocument>("User", userSchema);
+const MessageModle =
+  models.Message || model<MessageDocument>("User", userSchema);
 
 export default MessageModle;

@@ -1,10 +1,12 @@
 import "dotenv/config";
 import express, { Router, Request, Response, NextFunction } from "express";
-import { authenticatedRoute } from "../middlewares/authMiddleware";
 import AuthUtils from "../utils/authUtil";
 import mongoose from "mongoose";
 import request from "supertest";
 import cookieParser from "cookie-parser";
+import AuthMiddlewares from "../middlewares/authMiddleware";
+
+const { authenticatedRoute } = new AuthMiddlewares();
 
 const testApp = express();
 testApp.use(cookieParser());

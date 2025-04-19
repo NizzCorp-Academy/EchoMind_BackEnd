@@ -44,7 +44,7 @@ class PromptService {
         "Create a short and relevant title for the following conversation. Only return the title and nothing else.",
     };
 
-    const chats = [titlePrompt, ...messages].map((chat) => {
+    const chats = [...messages, titlePrompt].map((chat) => {
       return {
         role: chat.isFromUser ? "user" : "assistant",
         content: chat.message,
