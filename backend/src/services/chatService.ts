@@ -1,6 +1,5 @@
 
 import ChatModel from "../models/chatModel";
-import UserModel from "../models/userModel";
 
 /**
  * @class ChatService
@@ -30,10 +29,7 @@ class ChatService {
    */
   async getUserChatsByUserId(userId: string) {
     const objChats = await ChatModel.find({ userId: userId });
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+   
     return objChats;
   }
 
@@ -66,10 +62,7 @@ class ChatService {
    * @throws Error if the user or chat is not found, or if the deletion fails.
    */
   async deleteChat(chatId: string, userId: string) {
-    const user = await UserModel.findById(userId);
-    if (!user) {
-      throw new Error("User not found");
-    }
+    
 
     await this.isValidChatId(chatId);
     const userMatchChat = await ChatModel.findOne({ userId: userId, _id: chatId });
