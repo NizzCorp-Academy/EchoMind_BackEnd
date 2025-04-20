@@ -1,15 +1,18 @@
 import { NextFunction, Request, Response } from "express";
 import ChatService from "../services/chatService";
 import { ErrorMessage } from "../utils/errorMessasge";
+import MessageService from "../services/messageService";
+import PromptService from "../services/promptService";
 
 /**
  * @class ChatController
  * @file chatController.ts
  * @date 2025-04-19
  * @author Muhammad Haseen
+ * @author Jaseem
  * @brief Controller class for handling chat-related operations.
  *
- * This class contains methods for retrieving, editing, and deleting chats.
+ * This class contains methods for retrieving, editing, and deleting and creating chats.
  */
 class ChatController {
   /**
@@ -87,6 +90,51 @@ class ChatController {
         throw new ErrorMessage("Chat not deleted", 404);
       }
       res.status(200).json(deletedChat);
+    } catch (error) {
+      next(error);
+    }
+  }
+   /**
+   * @brief Handles chat completion requests and AI responses
+   * @param req Express Request object containing prompt and optional chatId
+   * @param res Express Response object
+   * @param next Express NextFunction for error handling
+   *
+   * @details This method handles two scenarios:
+   * 1. Continuing an existing chat (when chatId is provided)
+   * 2. Creating a new chat (when no chatId is provided)
+   *
+   * @throws Forwards any errors to the error handling middleware
+   *
+   * @note Request body should contain:
+   * - prompt: string (required) - The user's message
+   * - chatId: string (optional) - Existing chat identifier
+   */
+   async chatCompleation(req: Request, res: Response, next: NextFunction) {
+    const messageService = new MessageService();
+    const promptService = new PromptService();
+    const chatService = new ChatService();
+    try {
+      const { prompt, chatId }: { prompt: string; chatId?: string } = req.body;
+      if (chatId) {
+        await messageService.createMessage(true, prompt, chatId);
+        const Response = await promptService.chatCompletion(chatId);
+        await messageService.createMessage(false, Response, chatId);
+        res.status(200).json({ isFromUer: false, message: Response, chatId });
+      }
+
+      const response = await promptService.promptCompletion(prompt);
+      const title = await promptService.createTitle([
+        { isFromUser: true, message: prompt },
+        { isFromUser: false, message: response },
+      ]);
+      const chat = await chatService.createChat(req.userId, title);
+      await messageService.createMessage(true, prompt, chat._id.toString());
+      await messageService.createMessage(false, response, chat._id.toString());
+      res
+        .status(200)
+        .json({ isFromUer: false, message: response, chatId: chat._id });
+      next();
     } catch (error) {
       next(error);
     }
