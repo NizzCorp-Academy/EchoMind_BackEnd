@@ -76,10 +76,11 @@ class UserService {
    * @throws Error - Throws an error if the user is not found.
    */
   async getUserById(id: string) {
-    const user = await UserModel.findById(id).select("-password -__v");
+    let user = await UserModel.findById(id);
     if (!user) {
       throw new Error("User not found");
     }
+    user.password = "";
     return user;
   }
 }

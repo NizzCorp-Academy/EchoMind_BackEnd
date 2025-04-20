@@ -33,6 +33,7 @@ export const errorHandler = (
     console.error("Unexpected Error:", err);
     res.status(500).json({
       status: "error",
+      respon: err.message,
       message: "Internal Server Error",
     });
   }

@@ -10,12 +10,13 @@ const userRoutes = Router();
 userRoutes.get(
   "/me",
   authenticatedRoute,
-  (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { getUser } = new UserControll();
       const userId = req.userId;
-      const user = getUser(userId);
-      res.status(200).json({ user });
+      const user = await getUser(userId);
+      console.log(user);
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }
@@ -25,7 +26,7 @@ userRoutes.get(
 userRoutes.get("/set", (req: Request, res: Response, next: NextFunction) => {
   const token = req.body;
   res
-    .cookie("token", token, {
+    .cookie("jwt", token, {
       httpOnly: true,
       sameSite: "strict",
       secure: false,
