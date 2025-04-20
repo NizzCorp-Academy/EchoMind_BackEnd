@@ -7,6 +7,7 @@ import authRoute from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import chatRoute from "./routes/chatRoute";
 import cookieParser from "cookie-parser";
+import messageRoute from "./routes/messageRoutes";
 
 const { connectDB } = new DbConnection();
 
@@ -19,7 +20,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoute);
-// app.use("/api/message");
+app.use("/api/message", messageRoute);
 
 app.use(errorHandler);
 

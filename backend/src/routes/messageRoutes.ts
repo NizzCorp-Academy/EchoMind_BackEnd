@@ -1,11 +1,12 @@
 import { Router } from "express";
 import AuthMiddlewares from "../middlewares/authMiddleware";
+import MessageController from "../controllers/messageController";
 
-const { getMessagesByChatId, deleteMessage } = new Message();
+const { deleteMessage, getAllMessages } = new MessageController();
 const { authenticatedRoute } = new AuthMiddlewares();
 const messageRoute = Router();
 
-messageRoute.delete("/:id", authenticatedRoute, deleteMessage);
-messageRoute.post("/login", authenticatedRoute, getMessagesByChatId);
+messageRoute.delete("/delete", authenticatedRoute, deleteMessage);
+messageRoute.get("/getall", authenticatedRoute, getAllMessages);
 
 export default messageRoute;

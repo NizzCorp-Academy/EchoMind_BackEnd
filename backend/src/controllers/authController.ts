@@ -10,8 +10,8 @@
 import { NextFunction, Request, Response } from "express";
 import UserService from "../services/userService";
 import AuthUtils from "../utils/authUtil";
-import { registerSchema } from "../utils/validationUtils";
 import { ErrorMessage } from "../utils/errorMessasge";
+import ValidationJoi from "../utils/validationUtils";
 
 /**
  * @class AuthClass
@@ -31,6 +31,7 @@ class AuthClass {
    *
    */
   async register(req: Request, res: Response, next: NextFunction) {
+    const { registerSchema } = new ValidationJoi();
     try {
       const userService = new UserService();
       const authUtils = new AuthUtils();
@@ -39,7 +40,7 @@ class AuthClass {
         email,
         password,
       }: { username: string; email: string; password: string } = req.body;
-     
+
       const { error, value } = registerSchema.validate(req.body);
       if (error) {
         console.log("Validation error:", error.details[0].message);
@@ -80,7 +81,7 @@ class AuthClass {
       }
       const user = await userService.logninUser(email, password);
 
-      const token = authUtils.createToken(user._id);
+      const token = authUtils.createToken(user._id.toString());
       res.status(200).json({
         message: "user logged in successfully",
         user,
