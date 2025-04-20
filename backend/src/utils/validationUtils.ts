@@ -38,12 +38,12 @@ class ValidationJoi {
    * @brief Schema for validating chat creation payloads.
    *
    * Validates:
-   * - `title`: A string between 3 and 50 characters (optional).
-   * - `userId`: A string representing the user ID (required).
+   * - `prompt`: A string characters (required)
+   * - `chatId`: A string representing the user ID (optional).
    */
   createChatSchema = Joi.object({
-    title: Joi.string().min(3).max(50),
-    userId: Joi.string().required(),
+    prompt: Joi.string().required(),
+    chatId: Joi.string().optional(),
   });
 
   /**
