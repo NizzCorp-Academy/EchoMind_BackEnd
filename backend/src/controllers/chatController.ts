@@ -1,27 +1,18 @@
-import { Request, Response, NextFunction } from "express";
-import MessageService from "../services/messageService";
-import PromptService from "../services/promptService";
+import { NextFunction, Request, Response } from "express";
 import ChatService from "../services/chatService";
 import { ErrorMessage } from "../utils/errorMessasge";
-
-/**
- * @file chatController.ts
- * @author Muhammad Haseen
- * @brief Controller handling all chat-related operations in the EchoMind application
- * @date April 19, 2025
- */
+import MessageService from "../services/messageService";
+import PromptService from "../services/promptService";
 
 /**
  * @class ChatController
- * @brief Handles all chat-related HTTP requests and orchestrates the communication between services
+ * @file chatController.ts
+ * @date 2025-04-19
+ * @author Muhammad Haseen
+ * @author Jaseem
+ * @brief Controller class for handling chat-related operations.
  *
- * This controller is responsible for managing chat operations including:
- * - Creating new chat conversations
- * - Handling message exchanges with AI
- * - Managing existing chat sessions
- * - Deleting chats
- * - Editing chat titles
- * - Retrieving user's chat history
+ * This class contains methods for retrieving, editing, and deleting and creating chats.
  */
 class ChatController {
   /**

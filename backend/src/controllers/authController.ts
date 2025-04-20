@@ -40,7 +40,6 @@ class AuthClass {
         email,
         password,
       }: { username: string; email: string; password: string } = req.body;
-
       const { error, value } = registerSchema.validate(req.body);
       if (error) {
         console.log("Validation error:", error.details[0].message);
