@@ -10,6 +10,8 @@
 import { NextFunction, Request, Response } from "express";
 import UserService from "../services/userService";
 import AuthUtils from "../utils/authUtil";
+import { registerSchema } from "../utils/validationUtils";
+import { ErrorMessage } from "../utils/errorMessasge";
 
 /**
  * @class AuthClass
@@ -37,8 +39,11 @@ class AuthClass {
         email,
         password,
       }: { username: string; email: string; password: string } = req.body;
-      if (!username || !email || !password) {
-        throw new Error("User name and Email and password are required");
+     
+      const { error, value } = registerSchema.validate(req.body);
+      if (error) {
+        console.log("Validation error:", error.details[0].message);
+        throw new ErrorMessage(error.details[0].message);
       }
 
       const user = await userService.registerUser(username, email, password);
