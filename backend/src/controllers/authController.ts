@@ -28,8 +28,7 @@ class AuthClass {
    *
    *
    */
-  async register(req: Request, res: Response, next: NextFunction) {
-   
+  async registercontroller(req: Request, res: Response, next: NextFunction) {
     try {
       const userService = new UserService();
       const authUtils = new AuthUtils();
@@ -38,7 +37,6 @@ class AuthClass {
         email,
         password,
       }: { username: string; email: string; password: string } = req.body;
-     
 
       const user = await userService.registerUser(username, email, password);
       const token = authUtils.createToken(user._id.toString());
@@ -50,6 +48,13 @@ class AuthClass {
     } catch (error: any) {
       next(error);
     }
+  }
+  async register(username: string, email: string, password: string) {
+    const userService = new UserService();
+    const authUtils = new AuthUtils();
+    const user = await userService.registerUser(username, email, password);
+    const token = authUtils.createToken(user._id.toString());
+    return { user, token };
   }
 
   /**
@@ -64,12 +69,12 @@ class AuthClass {
    *
    *
    */
-  async login(req: Request, res: Response, next: NextFunction) {
+  async loginController(req: Request, res: Response, next: NextFunction) {
     try {
       const userService = new UserService();
       const authUtils = new AuthUtils();
       const { email, password }: { email: string; password: string } = req.body;
-     
+
       const user = await userService.logninUser(email, password);
 
       const token = authUtils.createToken(user._id.toString());
@@ -81,6 +86,13 @@ class AuthClass {
     } catch (error: any) {
       next(error);
     }
+  }
+  async login(email: string, password: string) {
+    const userService = new UserService();
+    const authUtils = new AuthUtils();
+    const user = await userService.logninUser(email, password);
+    const token = authUtils.createToken(user._id.toString());
+    return { user, token };
   }
 }
 

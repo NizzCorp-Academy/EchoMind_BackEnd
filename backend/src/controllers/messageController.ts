@@ -5,7 +5,7 @@ import { ErrorMessage } from "../utils/errorMessasge";
 /**
  * @class MessageController
  * @file messageController.ts
- * 
+ *
  * @date 2025-04-19
  * @author Muhammad Haseen
  * @brief Controller class for handling message-related operations.
@@ -23,7 +23,11 @@ class MessageController {
    * @param next The next middleware function in the Express pipeline.
    * @throws ErrorMessage If the chat ID is missing or no messages are found.
    */
-  async getAllMessages(req: Request, res: Response, next: NextFunction) {
+  async getAllMessagescontroller(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { chatId } = req.body;
       if (!chatId) {
@@ -40,6 +44,18 @@ class MessageController {
       next(error);
     }
   }
+  async getAllMessages(chatId: string) {
+    if (!chatId) {
+      throw new ErrorMessage("Chat ID is required", 400);
+    }
+
+    const messageService = new MessageService();
+    const messages = await messageService.getMessagesByChatId(chatId);
+    if (!messages) {
+      throw new ErrorMessage("No messages found for this chatId", 404);
+    }
+    return { messages };
+  }
 
   /**
    * @brief Deletes a specific message.
@@ -51,7 +67,11 @@ class MessageController {
    * @param next The next middleware function in the Express pipeline.
    * @throws ErrorMessage If the message ID is missing or the deletion fails.
    */
-  async deleteMessage(req: Request, res: Response, next: NextFunction) {
+  async deleteMessageController(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     try {
       const { messageId } = req.body;
       if (!messageId) {
@@ -66,6 +86,18 @@ class MessageController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async deleteMessage(messageId: string) {
+    if (!messageId) {
+      throw new ErrorMessage("Message ID is required", 400);
+    }
+    const messageService = new MessageService();
+    const deletedMessage = await messageService.deleteMessage(messageId);
+    if (!deletedMessage) {
+      throw new ErrorMessage("Message deletion failed", 404);
+    }
+    return { deletedMessage };
   }
 }
 

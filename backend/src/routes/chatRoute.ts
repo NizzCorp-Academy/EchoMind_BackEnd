@@ -12,9 +12,8 @@ import { Router } from "express";
 import ChatController from "../controllers/chatController";
 import AuthMiddlewares from "../middlewares/authMiddleware";
 import ValidationMiddleware from "../middlewares/validationMiddleware";
+import { Request, Response, NextFunction } from "express";
 
-const { chatCompleation, editChat, deleteChat, getAllChats } =
-  new ChatController();
 const { chatvalidation, updatechatvalidation, delchatvalidation } =
   new ValidationMiddleware();
 const { authenticatedRoute } = new AuthMiddlewares();
@@ -29,9 +28,20 @@ const chatRoute = Router();
  */
 chatRoute.post(
   "/completion",
-  chatCompleation, // Note: Seems like this might be mistakenly duplicated
+  chatvalidation,
   authenticatedRoute,
-  chatCompleation
+
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { chatCompleation } = new ChatController();
+      const { prompt, chatId } = req.body;
+      const userId = req.userId;
+      const response = await chatCompleation(prompt, chatId, userId);
+      res.status(200).json({ response });
+    } catch (error) {
+      next(error);
+    }
+  }
 );
 
 /**
@@ -41,7 +51,21 @@ chatRoute.post(
  * @middleware authenticatedRoute - Ensures the user is authenticated.
  * @controller editChat - Controller method to update a chat message.
  */
-chatRoute.put("/edit/:id", updatechatvalidation, authenticatedRoute, editChat);
+chatRoute.put(
+  "/edit/:id",
+  updatechatvalidation,
+  authenticatedRoute,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { editChat } = new ChatController();
+      const { title, chatId } = req.body;
+      const chat = await editChat(chatId, title);
+      res.status(200).json({ chat });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 /**
  * @route DELETE /delete/:id
@@ -54,7 +78,17 @@ chatRoute.delete(
   "/delete/:id",
   delchatvalidation,
   authenticatedRoute,
-  deleteChat
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { deleteChat } = new ChatController();
+      const { chatId } = req.body;
+      const userId = req.userId;
+      const chat = await deleteChat(userId, chatId);
+      res.status(200).json({ chat });
+    } catch (error) {
+      next(error);
+    }
+  }
 );
 
 /**
@@ -63,6 +97,19 @@ chatRoute.delete(
  * @middleware authenticatedRoute - Ensures the user is authenticated.
  * @controller getAllChats - Controller method to fetch all chat records.
  */
-chatRoute.get("/getchat", authenticatedRoute, getAllChats);
+chatRoute.get(
+  "/getchat",
+  authenticatedRoute,
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { getAllChats } = new ChatController();
+      const userId = req.userId;
+      const chats = await getAllChats(userId);
+      res.status(200).json({ chats });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export default chatRoute;
