@@ -30,7 +30,7 @@ class AuthClass {
    *
    *
    */
-  async register(req: Request, res: Response, next: NextFunction) {
+  async registerController(req: Request, res: Response, next: NextFunction) {
     const { registerSchema } = new ValidationJoi();
     try {
       const userService = new UserService();
@@ -57,6 +57,13 @@ class AuthClass {
       next(error);
     }
   }
+  async register(username: string, email: string, password: string) {
+    const userService = new UserService();
+    const authUtils = new AuthUtils();
+    const user = await userService.registerUser(username, email, password);
+    const token = authUtils.createToken(user._id.toString());
+    return { user, token };
+  }
 
   /**
    * @brief Logs in an existing user.
@@ -70,7 +77,7 @@ class AuthClass {
    *
    *
    */
-  async login(req: Request, res: Response, next: NextFunction) {
+  async loginController(req: Request, res: Response, next: NextFunction) {
     try {
       const userService = new UserService();
       const authUtils = new AuthUtils();
@@ -89,6 +96,13 @@ class AuthClass {
     } catch (error: any) {
       next(error);
     }
+  }
+  async login(email: string, password: string) {
+    const userService = new UserService();
+    const authUtils = new AuthUtils();
+    const user = await userService.logninUser(email, password);
+    const token = authUtils.createToken(user._id.toString());
+    return { user, token };
   }
 }
 

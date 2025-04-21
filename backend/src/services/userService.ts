@@ -24,11 +24,12 @@ class UserService {
       throw new Error("User already exists with this email");
     }
     const hash = await authUtil.hashPassword(password);
-    const user = await UserModel.create({
+    let user = await UserModel.create({
       username,
       email,
       password: hash,
     });
+    user.password = "";
     // await user.save();
     return user;
   }

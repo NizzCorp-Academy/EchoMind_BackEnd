@@ -32,7 +32,11 @@ class ChatController {
    * - prompt: string (required) - The user's message
    * - chatId: string (optional) - Existing chat identifier
    */
-  async chatCompleation(req: Request, res: Response, next: NextFunction) {
+  async chatCompleationController(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
     const messageService = new MessageService();
     const promptService = new PromptService();
     const chatService = new ChatService();
@@ -62,6 +66,31 @@ class ChatController {
     }
   }
 
+  async chatCompleation(prompt: string, chatId?: string, userId?: string) {
+    const messageService = new MessageService();
+    const promptService = new PromptService();
+    const chatService = new ChatService();
+    if (chatId) {
+      await messageService.createMessage(true, prompt, chatId);
+      const Response = await promptService.chatCompletion(chatId);
+      await messageService.createMessage(false, Response, chatId);
+      return { isFromUer: false, message: Response, chatId };
+    }
+
+    const response = await promptService.promptCompletion(prompt);
+    const title = await promptService.createTitle([
+      { isFromUser: true, message: prompt },
+      { isFromUser: false, message: response },
+    ]);
+    if (!chatId && !userId) {
+      throw new Error("user is not provided");
+    }
+    const chat = await chatService.createChat(userId ?? "", title);
+    await messageService.createMessage(true, prompt, chat._id.toString());
+    await messageService.createMessage(false, response, chat._id.toString());
+    return { isFromUer: false, message: response, chatId: chat._id };
+  }
+
   /**
    * @brief Retrieves all chats for a specific user.
    *
@@ -72,7 +101,8 @@ class ChatController {
    * @param next The next middleware function in the Express pipeline.
    * @throws ErrorMessage If no chats are found for the user.
    */
-  async getAllChats(req: Request, res: Response, next: NextFunction) {
+
+  async getAllChatsController(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.userId;
       const chatService = new ChatService();
@@ -86,6 +116,15 @@ class ChatController {
     }
   }
 
+  async getAllChats(userId: string) {
+    const chatService = new ChatService();
+    const chats = await chatService.getUserChatsByUserId(userId);
+    if (!chats) {
+      throw new ErrorMessage("No chats found", 404);
+    }
+    return { chats };
+  }
+
   /**
    * @brief Edits the title of a specific chat.
    *
@@ -96,7 +135,7 @@ class ChatController {
    * @param next The next middleware function in the Express pipeline.
    * @throws ErrorMessage If the chat ID or title is missing, or if the update fails.
    */
-  async editChat(req: Request, res: Response, next: NextFunction) {
+  async editChatController(req: Request, res: Response, next: NextFunction) {
     try {
       const chatId = req.body.chatId;
       const title = req.body.title;
@@ -114,6 +153,18 @@ class ChatController {
     }
   }
 
+  async editChat(chatId: string, title: string) {
+    if (!chatId || !title) {
+      throw new ErrorMessage("Chat ID and title are required", 400);
+    }
+    const chatService = new ChatService();
+    const updatedChat = await chatService.editTitle(chatId, title);
+    if (!updatedChat) {
+      throw new ErrorMessage("Chat not updated", 404);
+    }
+    return { updatedChat };
+  }
+
   /**
    * @brief Deletes a specific chat.
    *
@@ -124,7 +175,7 @@ class ChatController {
    * @param next The next middleware function in the Express pipeline.
    * @throws ErrorMessage If the chat ID is missing or the deletion fails.
    */
-  async deleteChat(req: Request, res: Response, next: NextFunction) {
+  async deleteChatController(req: Request, res: Response, next: NextFunction) {
     try {
       const chatId = req.body.chatId;
       const userId = req.userId;
@@ -140,6 +191,18 @@ class ChatController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async deleteChat(userId: string, chatId: string) {
+    if (!chatId) {
+      throw new ErrorMessage("Chat ID is required", 400);
+    }
+    const chatService = new ChatService();
+    const deletedChat = await chatService.deleteChat(chatId, userId);
+    if (!deletedChat) {
+      throw new ErrorMessage("Chat not deleted", 404);
+    }
+    return { deletedChat };
   }
 }
 
