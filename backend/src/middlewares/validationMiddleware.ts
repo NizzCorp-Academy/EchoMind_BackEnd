@@ -23,9 +23,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  registerValidation(req: Request, res: Response, next: NextFunction) {
+  async registerValidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.registerSchema.validate(req.body);
+    validate.registerSchema.validateAsync(req.body);
     next();
   }
 
@@ -35,9 +35,10 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  loginValidation(req: Request, res: Response, next: NextFunction) {
+  async loginValidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.loginSchema.validate(req.body);
+    await validate.loginSchema.validateAsync(req.body);
+    console.log("atleast this works");
     next();
   }
 
@@ -47,9 +48,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  chatvalidation(req: Request, res: Response, next: NextFunction) {
+  async chatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.createChatSchema.validate(req.body);
+    await validate.createChatSchema.validateAsync(req.body);
     next();
   }
 
@@ -59,9 +60,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  updatechatvalidation(req: Request, res: Response, next: NextFunction) {
+  async updatechatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.updateChatSchema.validate(req.body);
+    await validate.updateChatSchema.validateAsync(req.body);
     next();
   }
 
@@ -71,9 +72,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  delchatvalidation(req: Request, res: Response, next: NextFunction) {
+  async delchatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.deleteChatSchema.validate(req.body);
+    await validate.deleteChatSchema.validateAsync(req.body);
     next();
   }
 
@@ -83,9 +84,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  getmessagevalidation(req: Request, res: Response, next: NextFunction) {
+  async getmessagevalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.getAllMessagesSchema.validate(req.body);
+    await validate.getAllMessagesSchema.validateAsync(req.body);
     next();
   }
 
@@ -95,9 +96,9 @@ class ValidationMiddleware {
    * @param res - Express Response object.
    * @param next - Express NextFunction callback.
    */
-  messageidvalidation(req: Request, res: Response, next: NextFunction) {
+  async messageidvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    validate.messageIdSchema.validate(req.body);
+    await validate.messageIdSchema.validateAsync(req.body);
     next();
   }
 }

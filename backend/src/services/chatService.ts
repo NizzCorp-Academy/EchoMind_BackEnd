@@ -1,5 +1,6 @@
 import { couldStartTrivia } from "typescript";
 import ChatModel from "../models/chatModel";
+import { ErrorMessage } from "../utils/errorMessasge";
 
 /**
  * @class ChatService
@@ -55,9 +56,9 @@ class ChatService {
     // await objChat?.save();
     console.log(objChat);
     if (!objChat) {
-      throw new Error("title not updated");
+      throw new ErrorMessage("title not updated", 400, "cs03");
     }
-    console.log("Chat title updated successfully:", objChat);
+    // console.log("Chat title updated successfully:", objChat);
     return objChat;
   }
 
@@ -75,11 +76,11 @@ class ChatService {
       _id: chatId,
     });
     if (!userMatchChat) {
-      throw new Error("User not found in this chat");
+      throw new ErrorMessage("User not found in this chat", 404, "cs04a");
     }
     const objChat = await ChatModel.findByIdAndDelete(chatId);
     if (!objChat) {
-      throw new Error("failed to delete chat");
+      throw new ErrorMessage("failed to delete chat", 400, "cs04b");
     }
     return objChat;
   }
@@ -93,7 +94,7 @@ class ChatService {
   async isValidChatId(chatId: string) {
     const chat = await ChatModel.findById(chatId);
     if (!chat) {
-      throw new Error("Chat not found");
+      throw new ErrorMessage("Chat not found", 404, "cs05");
     }
     return true;
   }

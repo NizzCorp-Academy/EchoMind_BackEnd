@@ -13,6 +13,7 @@ export class ErrorMessage extends Error {
    * @brief HTTP status code associated with the error.
    */
   statusCode: number;
+  errorCode: string;
 
   /**
    * @brief Indicates if the error is operational (expected) or not.
@@ -28,11 +29,13 @@ export class ErrorMessage extends Error {
    */
   constructor(
     message: string,
-    statusCode: number = 500,
+    statusCode: number,
+    errorCode: string,
     isOperational: boolean = true
   ) {
     super(message);
     this.statusCode = statusCode;
+    this.errorCode = errorCode;
     this.isOperational = isOperational;
 
     Error.captureStackTrace(this, this.constructor);

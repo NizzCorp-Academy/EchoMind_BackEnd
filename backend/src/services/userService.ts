@@ -1,5 +1,6 @@
 import AuthUtils from "../utils/authUtil";
 import UserModel from "../models/userModel";
+import { ErrorMessage } from "../utils/errorMessasge";
 /**
  * @author Jaseem
  * @description UserService class handles user-related operations such as registration, login, and fetching user details.
@@ -21,7 +22,11 @@ class UserService {
     const authUtil = new AuthUtils();
     const isExist = await this.doesExistEmail(email);
     if (isExist) {
-      throw new Error("User already exists with this email");
+      throw new ErrorMessage(
+        "User already exists with this email",
+        400,
+        "us01"
+      );
     }
     const hash = await authUtil.hashPassword(password);
     let user = await UserModel.create({
@@ -46,11 +51,15 @@ class UserService {
     const user = await UserModel.findOne({ email });
     console.log(email);
     if (!user) {
-      throw new Error("User does not exist with this email");
+      throw new ErrorMessage(
+        "User does not exist with this email",
+        400,
+        "us02a"
+      );
     }
-    const isMatch = authUtil.comparePassword(password, user.password);
+    const isMatch = await authUtil.comparePassword(password, user.password);
     if (!isMatch) {
-      throw new Error("Password is incorrect");
+      throw new ErrorMessage("Password is incorrect", 400, "us02b");
     }
     return user;
   }
@@ -79,7 +88,7 @@ class UserService {
   async getUserById(id: string) {
     let user = await UserModel.findById(id);
     if (!user) {
-      throw new Error("User not found");
+      throw new ErrorMessage("User not found", 404, "us03");
     }
     user.password = "";
     return user;

@@ -28,14 +28,11 @@ authRoute.post(
   "/register",
   registerValidation,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { register } = new AuthClass();
-      const { username, email, password } = req.body;
-      const { user, token } = await register(username, email, password);
-      res.status(200).json({ user, token });
-    } catch (error) {
-      next(error);
-    }
+    const { register } = new AuthClass();
+    const { username, email, password } = req.body;
+    const { user, token } = await register(username, email, password);
+    res.status(200).json({ user, token });
+    next();
   }
 );
 
@@ -49,14 +46,11 @@ authRoute.post(
   "/login",
   loginValidation,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { login } = new AuthClass();
-      const { email, password } = req.body;
-      const { user, token } = await login(email, password);
-      res.status(200).json({ user, token });
-    } catch (error) {
-      next(error);
-    }
+    const { login } = new AuthClass();
+    const { email, password } = req.body;
+    const { user, token } = await login(email, password);
+    res.status(200).json({ user, token });
+    next();
   }
 );
 

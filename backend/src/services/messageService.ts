@@ -7,6 +7,7 @@
 
 import mongoose from "mongoose";
 import MessageModle from "../models/messageModel";
+import { ErrorMessage } from "../utils/errorMessasge";
 
 class MessageService {
   /**
@@ -35,11 +36,11 @@ class MessageService {
    */
   async deleteMessage(messageId: string) {
     if (mongoose.isValidObjectId(messageId) === false) {
-      throw new Error("Invalid chatId format");
+      throw new ErrorMessage("Invalid chatId format", 400, "ms02a");
     }
     const message = await MessageModle.findByIdAndDelete(messageId);
     if (!message) {
-      throw new Error("Message not found");
+      throw new ErrorMessage("Message not found", 404, "ms02b");
     }
     return message;
   }
@@ -53,13 +54,13 @@ class MessageService {
    */
   async getMessagesByChatId(chatId: string) {
     if (mongoose.isValidObjectId(chatId) === false) {
-      throw new Error("Invalid chatId format");
+      throw new ErrorMessage("Invalid chatId format", 400, "ms03a");
     }
     const messages = await MessageModle.find({ chatId }).sort({
       createdAt: 1,
     });
     if (!messages) {
-      throw new Error("No messages found for this chatId");
+      throw new ErrorMessage("No messages found for this chatId", 400, "ms03b");
     }
     return messages;
   }

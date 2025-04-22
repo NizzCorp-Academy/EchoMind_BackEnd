@@ -32,15 +32,12 @@ chatRoute.post(
   authenticatedRoute,
 
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { chatCompleation } = new ChatController();
-      const { prompt, chatId } = req.body;
-      const userId = req.userId;
-      const response = await chatCompleation(prompt, chatId, userId);
-      res.status(200).json({ response });
-    } catch (error) {
-      next(error);
-    }
+    const { chatCompleation } = new ChatController();
+    const { prompt, chatId } = req.body;
+    const userId = req.userId;
+    const response = await chatCompleation(prompt, chatId, userId);
+    res.status(200).json({ response });
+    next();
   }
 );
 
@@ -56,14 +53,11 @@ chatRoute.put(
   updatechatvalidation,
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { editChat } = new ChatController();
-      const { title, chatId } = req.body;
-      const chat = await editChat(chatId, title);
-      res.status(200).json({ chat });
-    } catch (error) {
-      next(error);
-    }
+    const { editChat } = new ChatController();
+    const { title, chatId } = req.body;
+    const chat = await editChat(chatId, title);
+    res.status(200).json({ chat });
+    next();
   }
 );
 
@@ -75,19 +69,16 @@ chatRoute.put(
  * @controller deleteChat - Controller method to delete a chat message.
  */
 chatRoute.delete(
-  "/delete/:id",
+  "/delete",
   delchatvalidation,
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { deleteChat } = new ChatController();
-      const { chatId } = req.body;
-      const userId = req.userId;
-      const chat = await deleteChat(userId, chatId);
-      res.status(200).json({ chat });
-    } catch (error) {
-      next(error);
-    }
+    const { deleteChat } = new ChatController();
+    const { chatId } = req.body;
+    const userId = req.userId;
+    const chat = await deleteChat(userId, chatId);
+    res.status(200).json({ chat });
+    next();
   }
 );
 
@@ -101,14 +92,11 @@ chatRoute.get(
   "/getchat",
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { getAllChats } = new ChatController();
-      const userId = req.userId;
-      const chats = await getAllChats(userId);
-      res.status(200).json({ chats });
-    } catch (error) {
-      next(error);
-    }
+    const { getAllChats } = new ChatController();
+    const userId = req.userId;
+    const chats = await getAllChats(userId);
+    res.status(200).json({ chats });
+    next();
   }
 );
 

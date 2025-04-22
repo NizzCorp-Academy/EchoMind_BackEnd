@@ -14,14 +14,11 @@ messageRoute.delete(
   messageidvalidation,
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { deleteMessage } = new MessageController();
-      const { messageId } = req.body;
-      const message = await deleteMessage(messageId);
-      res.status(200).json({ message });
-    } catch (error) {
-      next(error);
-    }
+    const { deleteMessage } = new MessageController();
+    const { messageId } = req.body;
+    const message = await deleteMessage(messageId);
+    res.status(200).json({ message });
+    next();
   }
 );
 messageRoute.get(
@@ -29,14 +26,11 @@ messageRoute.get(
   getmessagevalidation,
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { getAllMessages } = new MessageController();
-      const { chatId } = req.body;
-      const messages = await getAllMessages(chatId);
-      res.status(200).json({ messages });
-    } catch (error) {
-      next(error);
-    }
+    const { getAllMessages } = new MessageController();
+    const { chatId } = req.body;
+    const messages = await getAllMessages(chatId);
+    res.status(200).json({ messages });
+    next();
   }
 );
 

@@ -31,13 +31,17 @@ class MessageController {
     try {
       const { chatId } = req.body;
       if (!chatId) {
-        throw new ErrorMessage("Chat ID is required", 400);
+        throw new ErrorMessage("Chat ID is required", 400, "m-ctrl-01a");
       }
 
       const messageService = new MessageService();
       const messages = await messageService.getMessagesByChatId(chatId);
       if (!messages) {
-        throw new ErrorMessage("No messages found for this chatId", 404);
+        throw new ErrorMessage(
+          "No messages found for this chatId",
+          404,
+          "m-ctrl-01b"
+        );
       }
       res.status(200).json(messages);
     } catch (error) {
@@ -46,13 +50,17 @@ class MessageController {
   }
   async getAllMessages(chatId: string) {
     if (!chatId) {
-      throw new ErrorMessage("Chat ID is required", 400);
+      throw new ErrorMessage("Chat ID is required", 400, "m-ctrl-02a");
     }
 
     const messageService = new MessageService();
     const messages = await messageService.getMessagesByChatId(chatId);
     if (!messages) {
-      throw new ErrorMessage("No messages found for this chatId", 404);
+      throw new ErrorMessage(
+        "No messages found for this chatId",
+        404,
+        "m-ctrl-02b"
+      );
     }
     return { messages };
   }
@@ -75,12 +83,12 @@ class MessageController {
     try {
       const { messageId } = req.body;
       if (!messageId) {
-        throw new ErrorMessage("Message ID is required", 400);
+        throw new ErrorMessage("Message ID is required", 400, "m-ctrl-03a");
       }
       const messageService = new MessageService();
       const deletedMessage = await messageService.deleteMessage(messageId);
       if (!deletedMessage) {
-        throw new ErrorMessage("Message deletion failed", 404);
+        throw new ErrorMessage("Message deletion failed", 404, "m-ctrl-03b");
       }
       res.status(200).json(deletedMessage);
     } catch (error) {
@@ -90,12 +98,12 @@ class MessageController {
 
   async deleteMessage(messageId: string) {
     if (!messageId) {
-      throw new ErrorMessage("Message ID is required", 400);
+      throw new ErrorMessage("Message ID is required", 400, "m-ctrl-04a");
     }
     const messageService = new MessageService();
     const deletedMessage = await messageService.deleteMessage(messageId);
     if (!deletedMessage) {
-      throw new ErrorMessage("Message deletion failed", 404);
+      throw new ErrorMessage("Message deletion failed", 404, "m-ctrl-03b");
     }
     return { deletedMessage };
   }

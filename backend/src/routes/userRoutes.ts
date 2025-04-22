@@ -11,15 +11,12 @@ userRoutes.get(
   "/me",
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { getUser } = new UserControll();
-      const userId = req.userId;
-      const user = await getUser(userId);
-      console.log(user);
-      res.status(200).json(user);
-    } catch (error) {
-      next(error);
-    }
+    const { getUser } = new UserControll();
+    const userId = req.userId;
+    const user = await getUser(userId);
+    console.log(user);
+    res.status(200).json(user);
+    next();
   }
 );
 

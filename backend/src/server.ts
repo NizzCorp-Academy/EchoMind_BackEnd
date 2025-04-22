@@ -20,6 +20,16 @@ app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoute);
 app.use("/api/message", messageRoute);
 
+app.get("/not", async (req, res, next) => {
+  throw new Error("an async error");
+});
+
+app.use((req, res, next) => {
+  try {
+  } catch (err: any) {
+    next(err);
+  }
+});
 app.use(errorHandler);
 process.on("uncaughtException", (error) => {
   console.error("Uncaught Exception:", error);

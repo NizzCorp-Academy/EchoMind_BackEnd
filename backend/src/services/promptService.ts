@@ -1,4 +1,5 @@
 import { AI_ENDPOIND, AI_MODEL } from "../utils/env";
+import { ErrorMessage } from "../utils/errorMessasge";
 import MessageService from "./messageService";
 
 /**
@@ -25,7 +26,7 @@ class PromptService {
       body: JSON.stringify({ model: AI_MODEL, prompt }),
     });
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new ErrorMessage("Network response was not ok", 400, "ps01");
     }
     const data = await response.json();
     return data.choices[0].text;
@@ -97,7 +98,7 @@ class PromptService {
       }),
     });
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new ErrorMessage("Network response was not ok", 400, "ps02");
     }
     const data = await response.json();
     return data.choices[0].message.content;

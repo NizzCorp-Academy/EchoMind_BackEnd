@@ -83,7 +83,7 @@ class ChatController {
       { isFromUser: false, message: response },
     ]);
     if (!chatId && !userId) {
-      throw new Error("user is not provided");
+      throw new ErrorMessage("user is not provided", 400, "c-ctrl-02");
     }
     const chat = await chatService.createChat(userId ?? "", title);
     await messageService.createMessage(true, prompt, chat._id.toString());
@@ -108,7 +108,7 @@ class ChatController {
       const chatService = new ChatService();
       const chats = await chatService.getUserChatsByUserId(userId);
       if (!chats) {
-        throw new ErrorMessage("No chats found", 404);
+        throw new ErrorMessage("No chats found", 404, "c-ctrl-03");
       }
       res.status(200).json(chats);
     } catch (error) {
@@ -120,7 +120,7 @@ class ChatController {
     const chatService = new ChatService();
     const chats = await chatService.getUserChatsByUserId(userId);
     if (!chats) {
-      throw new ErrorMessage("No chats found", 404);
+      throw new ErrorMessage("No chats found", 404, "c-ctrl-04");
     }
     return { chats };
   }
@@ -140,12 +140,16 @@ class ChatController {
       const chatId = req.body.chatId;
       const title = req.body.title;
       if (!chatId || !title) {
-        throw new ErrorMessage("Chat ID and title are required", 400);
+        throw new ErrorMessage(
+          "Chat ID and title are required",
+          400,
+          "c-ctrl-05a"
+        );
       }
       const chatService = new ChatService();
       const updatedChat = await chatService.editTitle(chatId, title);
       if (!updatedChat) {
-        throw new ErrorMessage("Chat not updated", 404);
+        throw new ErrorMessage("Chat not updated", 404, "c-ctrl-05b");
       }
       res.status(200).json(updatedChat);
     } catch (error) {
@@ -155,12 +159,16 @@ class ChatController {
 
   async editChat(chatId: string, title: string) {
     if (!chatId || !title) {
-      throw new ErrorMessage("Chat ID and title are required", 400);
+      throw new ErrorMessage(
+        "Chat ID and title are required",
+        400,
+        "c-ctrl-06a"
+      );
     }
     const chatService = new ChatService();
     const updatedChat = await chatService.editTitle(chatId, title);
     if (!updatedChat) {
-      throw new ErrorMessage("Chat not updated", 404);
+      throw new ErrorMessage("Chat not updated", 404, "c-ctrl-06b");
     }
     return { updatedChat };
   }
@@ -180,12 +188,12 @@ class ChatController {
       const chatId = req.body.chatId;
       const userId = req.userId;
       if (!chatId) {
-        throw new ErrorMessage("Chat ID is required", 400);
+        throw new ErrorMessage("Chat ID is required", 400, "c-ctrl-07a");
       }
       const chatService = new ChatService();
       const deletedChat = await chatService.deleteChat(chatId, userId);
       if (!deletedChat) {
-        throw new ErrorMessage("Chat not deleted", 404);
+        throw new ErrorMessage("Chat not deleted", 404, "c-ctrl-07b");
       }
       res.status(200).json(deletedChat);
     } catch (error) {
@@ -195,12 +203,12 @@ class ChatController {
 
   async deleteChat(userId: string, chatId: string) {
     if (!chatId) {
-      throw new ErrorMessage("Chat ID is required", 400);
+      throw new ErrorMessage("Chat ID is required", 400, "c-ctrl-08a");
     }
     const chatService = new ChatService();
     const deletedChat = await chatService.deleteChat(chatId, userId);
     if (!deletedChat) {
-      throw new ErrorMessage("Chat not deleted", 404);
+      throw new ErrorMessage("Chat not deleted", 404, "c-ctrl-08b");
     }
     return { deletedChat };
   }

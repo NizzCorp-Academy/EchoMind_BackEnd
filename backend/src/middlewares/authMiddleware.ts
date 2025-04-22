@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import AuthUtils from "../utils/authUtil";
+import { ErrorMessage } from "../utils/errorMessasge";
 
 /**
  * @author Jaseem
@@ -16,20 +17,16 @@ import AuthUtils from "../utils/authUtil";
 class AuthMiddlewares {
   authenticatedRoute(req: Request, res: Response, next: NextFunction) {
     const authUtils = new AuthUtils();
-    try {
-      const { token } = req.cookies.jwt;
-      if (!token) {
-        throw new Error("token is not Provided");
-      }
-      const decode = authUtils.verifyToken(token);
-      // if (decode === null) {
-      // throw new Error("invalid token");
-      // }
-      req.userId = decode.userId;
-      next();
-    } catch (error) {
-      next(error);
+    if (!req.cookies.jwt) {
+      throw new ErrorMessage("token is not Provided", 400, "a-mdlw-01");
     }
+    const { token } = req.cookies.jwt;
+    const decode = authUtils.verifyToken(token);
+    // if (decode === null) {
+    // throw new Error("invalid token");
+    // }
+    req.userId = decode.userId;
+    next();
   }
 }
 
