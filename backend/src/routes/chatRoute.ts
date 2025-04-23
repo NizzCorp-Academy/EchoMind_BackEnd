@@ -36,7 +36,7 @@ chatRoute.post(
     const { prompt, chatId } = req.body;
     const userId = req.userId;
     const response = await chatCompleation(prompt, chatId, userId);
-    res.status(200).json({ response });
+    res.status(200).json({ status: "success", response });
     next();
   }
 );
@@ -56,7 +56,7 @@ chatRoute.put(
     const { editChat } = new ChatController();
     const { title, chatId } = req.body;
     const chat = await editChat(chatId, title);
-    res.status(200).json({ chat });
+    res.status(200).json({ status: "success", chat });
     next();
   }
 );
@@ -77,7 +77,7 @@ chatRoute.delete(
     const { chatId } = req.body;
     const userId = req.userId;
     const chat = await deleteChat(userId, chatId);
-    res.status(200).json({ chat });
+    res.status(200).json({ status: "success", chat });
     next();
   }
 );
@@ -95,7 +95,7 @@ chatRoute.get(
     const { getAllChats } = new ChatController();
     const userId = req.userId;
     const chats = await getAllChats(userId);
-    res.status(200).json({ chats });
+    res.status(200).json({ status: "success", chats });
     next();
   }
 );
