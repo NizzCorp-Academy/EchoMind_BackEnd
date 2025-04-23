@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "jest --verbose",
-    "start": "tsx --no-cache src/server.ts"
+    "dev": "tsx --no-cache src/server.ts",
+    "start": "node dist/server.js"
   },
   "keywords": [],
   "author": "",
