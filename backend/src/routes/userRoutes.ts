@@ -15,7 +15,7 @@ userRoutes.get(
     const userId = req.userId;
     const user = await getUser(userId);
     console.log(user);
-    res.status(200).json(user);
+    res.status(200).json({ status: "success", user });
     next();
   }
 );

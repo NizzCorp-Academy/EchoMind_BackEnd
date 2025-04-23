@@ -7,7 +7,7 @@ import { ErrorMessage } from "../utils/errorMessasge";
  * @file authMiddleware.ts
  *
  *
- * @function authenticatedRoute
+ * @function authenficatedRoute
  * @brief a middleware funtion for authenticating the user and setting the req.userId with the jwt payload
  * @param req express request object
  * @param res express response object

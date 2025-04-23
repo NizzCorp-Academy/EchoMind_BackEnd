@@ -17,7 +17,7 @@ messageRoute.delete(
     const { deleteMessage } = new MessageController();
     const { messageId } = req.body;
     const message = await deleteMessage(messageId);
-    res.status(200).json({ message });
+    res.status(200).json({ status: "success", message });
     next();
   }
 );
@@ -29,7 +29,7 @@ messageRoute.get(
     const { getAllMessages } = new MessageController();
     const { chatId } = req.body;
     const messages = await getAllMessages(chatId);
-    res.status(200).json({ messages });
+    res.status(200).json({ status: "success", messages });
     next();
   }
 );

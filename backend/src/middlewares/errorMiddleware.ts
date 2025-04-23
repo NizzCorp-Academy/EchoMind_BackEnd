@@ -26,6 +26,7 @@ export const errorHandler = (
   if (err instanceof ErrorMessage) {
     // Handle application-specific errors
     res.status(err.statusCode).json({
+      status: "error",
       errorCode: err.errorCode,
       message: err.message,
     });
@@ -33,12 +34,14 @@ export const errorHandler = (
     console.log("joi error");
     // Handle unexpected errors
     res.status(400).json({
-      // status: "error",
+      status: "error",
       message: err.message,
     });
   } else {
     res.status(500).json({
+      status: "error",
       message: "Internal server error",
+      log: "",
     });
   }
 };

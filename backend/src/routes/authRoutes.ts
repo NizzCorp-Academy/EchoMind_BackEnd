@@ -31,7 +31,7 @@ authRoute.post(
     const { register } = new AuthClass();
     const { username, email, password } = req.body;
     const { user, token } = await register(username, email, password);
-    res.status(200).json({ user, token });
+    res.status(200).json({ status: "success", user, token });
     next();
   }
 );
@@ -49,7 +49,7 @@ authRoute.post(
     const { login } = new AuthClass();
     const { email, password } = req.body;
     const { user, token } = await login(email, password);
-    res.status(200).json({ user, token });
+    res.status(200).json({ status: "success", user, token });
     next();
   }
 );
