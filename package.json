@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "test": "jest --verbose",
-    "log": "jest --json --outputFile=jest-results.json --verbose",
-    "dev": "ts-node src/server.ts",
     "start": "tsx --no-cache src/server.ts"
   },
   "keywords": [],
