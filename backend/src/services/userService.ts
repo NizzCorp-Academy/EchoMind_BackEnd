@@ -35,7 +35,7 @@ class UserService {
       password: hash,
     });
     user.password = "";
-    // await user.save();
+   
     return user;
   }
 

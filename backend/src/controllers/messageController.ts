@@ -1,53 +1,33 @@
-import { NextFunction, Request, Response } from "express";
 import MessageService from "../services/messageService";
 import { ErrorMessage } from "../utils/errorMessasge";
 
 /**
  * @class MessageController
  * @file messageController.ts
- *
  * @date 2025-04-19
- * @author Muhammad Haseen
  * @brief Controller class for handling message-related operations.
  *
- * This class contains methods for retrieving and deleting messages.
+ * This controller manages operations related to retrieving and deleting messages
+ * within a specific chat.
+ *
+ * @author Muhammad Haseen
  */
 class MessageController {
   /**
+   * @function getAllMessages
    * @brief Retrieves all messages for a specific chat.
    *
-   * This method fetches all messages associated with a given chat ID.
+   * @param chatId The unique identifier of the chat.
+   * @return An object containing the list of messages in the chat.
    *
-   * @param req The HTTP request object containing the chat ID in the body.
-   * @param res The HTTP response object used to send the response.
-   * @param next The next middleware function in the Express pipeline.
-   * @throws ErrorMessage If the chat ID is missing or no messages are found.
+   * @throws ErrorMessage if the chatId is not provided or no messages are found.
+   *
+   * @details
+   * This method uses the MessageService to fetch all messages that belong to the
+   * provided chatId. It ensures the chatId is provided and that messages exist
+   * for that chat.
    */
-  async getAllMessagescontroller(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const { chatId } = req.body;
-      if (!chatId) {
-        throw new ErrorMessage("Chat ID is required", 400, "m-ctrl-01a");
-      }
 
-      const messageService = new MessageService();
-      const messages = await messageService.getMessagesByChatId(chatId);
-      if (!messages) {
-        throw new ErrorMessage(
-          "No messages found for this chatId",
-          404,
-          "m-ctrl-01b"
-        );
-      }
-      res.status(200).json(messages);
-    } catch (error) {
-      next(error);
-    }
-  }
   async getAllMessages(chatId: string) {
     if (!chatId) {
       throw new ErrorMessage("Chat ID is required", 400, "m-ctrl-02a");
@@ -66,35 +46,18 @@ class MessageController {
   }
 
   /**
-   * @brief Deletes a specific message.
+   * @function deleteMessage
+   * @brief Deletes a specific message by its ID.
    *
-   * This method deletes a message based on the provided message ID.
+   * @param messageId The unique identifier of the message to be deleted.
+   * @return An object confirming the deletion of the message.
    *
-   * @param req The HTTP request object containing the message ID in the body.
-   * @param res The HTTP response object used to send the response.
-   * @param next The next middleware function in the Express pipeline.
-   * @throws ErrorMessage If the message ID is missing or the deletion fails.
+   * @throws ErrorMessage if the messageId is not provided or deletion fails.
+   *
+   * @details
+   * This method delegates to MessageService to remove the specified message
+   * from the data source.
    */
-  async deleteMessageController(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const { messageId } = req.body;
-      if (!messageId) {
-        throw new ErrorMessage("Message ID is required", 400, "m-ctrl-03a");
-      }
-      const messageService = new MessageService();
-      const deletedMessage = await messageService.deleteMessage(messageId);
-      if (!deletedMessage) {
-        throw new ErrorMessage("Message deletion failed", 404, "m-ctrl-03b");
-      }
-      res.status(200).json(deletedMessage);
-    } catch (error) {
-      next(error);
-    }
-  }
 
   async deleteMessage(messageId: string) {
     if (!messageId) {

@@ -7,48 +7,29 @@
  * and login functionality.
  */
 
-import { NextFunction, Request, Response } from "express";
 import UserService from "../services/userService";
 import AuthUtils from "../utils/authUtil";
 
 /**
  * @class AuthClass
  * @brief Handles user authentication operations.
+ *
+ * This class provides methods for user registration and login functionality.
  */
 class AuthClass {
   /**
    * @brief Registers a new user.
    *
-   * This method handles the registration of a new user by validating the input,
-   * creating the user, and generating an authentication token.
+   * This method registers a new user by creating a user record in the database
+   * and generating an authentication token for the user.
    *
-   * @param req The HTTP request object containing user details (username, email, password).
-   * @param res The HTTP response object used to send the response.
-   * @param next The next middleware function in the Express pipeline.
-   *
-   *
+   * @param username The username of the user.
+   * @param email The email address of the user.
+   * @param password The password of the user.
+   * @return An object containing the registered user and their authentication token.
+   * @throws Error If the registration process fails.
    */
-  async registercontroller(req: Request, res: Response, next: NextFunction) {
-    try {
-      const userService = new UserService();
-      const authUtils = new AuthUtils();
-      const {
-        username,
-        email,
-        password,
-      }: { username: string; email: string; password: string } = req.body;
 
-      const user = await userService.registerUser(username, email, password);
-      const token = authUtils.createToken(user._id.toString());
-      res.status(201).json({
-        message: "user registered successfully",
-        user,
-        token,
-      });
-    } catch (error: any) {
-      next(error);
-    }
-  }
   async register(username: string, email: string, password: string) {
     const userService = new UserService();
     const authUtils = new AuthUtils();
@@ -60,33 +41,15 @@ class AuthClass {
   /**
    * @brief Logs in an existing user.
    *
-   * This method handles user login by validating the input, authenticating the user,
-   * and generating an authentication token.
+   * This method authenticates a user by verifying their email and password,
+   * and generates an authentication token for the user.
    *
-   * @param req The HTTP request object containing user credentials (email, password).
-   * @param res The HTTP response object used to send the response.
-   * @param next The next middleware function in the Express pipeline.
-   *
-   *
+   * @param email The email address of the user.
+   * @param password The password of the user.
+   * @return An object containing the authenticated user and their authentication token.
+   * @throws Error If the login process fails.
    */
-  async loginController(req: Request, res: Response, next: NextFunction) {
-    try {
-      const userService = new UserService();
-      const authUtils = new AuthUtils();
-      const { email, password }: { email: string; password: string } = req.body;
 
-      const user = await userService.logninUser(email, password);
-
-      const token = authUtils.createToken(user._id.toString());
-      res.status(200).json({
-        message: "user logged in successfully",
-        user,
-        token,
-      });
-    } catch (error: any) {
-      next(error);
-    }
-  }
   async login(email: string, password: string) {
     const userService = new UserService();
     const authUtils = new AuthUtils();
