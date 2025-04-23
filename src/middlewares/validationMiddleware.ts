@@ -50,7 +50,9 @@ class ValidationMiddleware {
    */
   async chatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    await validate.createChatSchema.validateAsync(req.body);
+    const { id: chatId } = req.params;
+    const { prompt } = req.body;
+    await validate.createChatSchema.validateAsync({ prompt, chatId });
     next();
   }
 
@@ -62,7 +64,9 @@ class ValidationMiddleware {
    */
   async updatechatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    await validate.updateChatSchema.validateAsync(req.body);
+    const { id: chatId } = req.params;
+    const { title } = req.body;
+    await validate.updateChatSchema.validateAsync(chatId, title);
     next();
   }
 
@@ -74,7 +78,8 @@ class ValidationMiddleware {
    */
   async delchatvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    await validate.deleteChatSchema.validateAsync(req.body);
+    const { id: chatId } = req.params;
+    await validate.deleteChatSchema.validateAsync({ chatId });
     next();
   }
 
@@ -86,7 +91,8 @@ class ValidationMiddleware {
    */
   async getmessagevalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    await validate.getAllMessagesSchema.validateAsync(req.body);
+    const { id: chatId } = req.params;
+    await validate.getAllMessagesSchema.validateAsync({ chatId });
     next();
   }
 
@@ -98,7 +104,8 @@ class ValidationMiddleware {
    */
   async messageidvalidation(req: Request, res: Response, next: NextFunction) {
     const validate = new ValidationJoi();
-    await validate.messageIdSchema.validateAsync(req.body);
+    const { id } = req.params;
+    await validate.messageIdSchema.validateAsync({ id });
     next();
   }
 }

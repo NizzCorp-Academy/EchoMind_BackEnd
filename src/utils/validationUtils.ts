@@ -67,7 +67,6 @@ class ValidationJoi {
    */
   deleteChatSchema = Joi.object({
     chatId: Joi.string().required(),
-    userId: Joi.string().required(),
   });
 
   /**
@@ -87,7 +86,7 @@ class ValidationJoi {
    * - `messageId`: A string representing the message ID (required).
    */
   messageIdSchema = Joi.object({
-    messageId: Joi.string().required(),
+    id: Joi.string().required(),
   });
 }
 

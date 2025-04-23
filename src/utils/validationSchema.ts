@@ -13,9 +13,9 @@ class ValidationSchema {
   });
 
   promptSchema = Joi.object({
-    chatId: Joi.string().optional(),
     prompt: Joi.string().required(),
   });
 
   idSchema = Joi.string().required();
+  idOptionSchema = Joi.string().optional();
 }

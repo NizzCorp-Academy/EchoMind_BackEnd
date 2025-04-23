@@ -27,15 +27,16 @@ const chatRoute = Router();
  * @controller chatCompleation - Controller method to handle the request.
  */
 chatRoute.post(
-  "/completion",
+  "/completion/:id",
   chatvalidation,
   authenticatedRoute,
 
   async (req: Request, res: Response, next: NextFunction) => {
     const { chatCompleation } = new ChatController();
-    const { prompt, chatId } = req.body;
+    const { id } = req.params;
+    const { prompt } = req.body;
     const userId = req.userId;
-    const response = await chatCompleation(prompt, chatId, userId);
+    const response = await chatCompleation(prompt, id, userId);
     res.status(200).json({ status: "success", response });
     next();
   }
@@ -54,8 +55,9 @@ chatRoute.put(
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
     const { editChat } = new ChatController();
-    const { title, chatId } = req.body;
-    const chat = await editChat(chatId, title);
+    const { id } = req.params;
+    const { title } = req.body;
+    const chat = await editChat(id, title);
     res.status(200).json({ status: "success", chat });
     next();
   }
@@ -69,14 +71,14 @@ chatRoute.put(
  * @controller deleteChat - Controller method to delete a chat message.
  */
 chatRoute.delete(
-  "/delete",
+  "/:id",
   delchatvalidation,
   authenticatedRoute,
   async (req: Request, res: Response, next: NextFunction) => {
     const { deleteChat } = new ChatController();
-    const { chatId } = req.body;
+    const { id } = req.params;
     const userId = req.userId;
-    const chat = await deleteChat(userId, chatId);
+    const chat = await deleteChat(userId, id);
     res.status(200).json({ status: "success", chat });
     next();
   }
