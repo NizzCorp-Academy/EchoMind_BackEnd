@@ -16,7 +16,7 @@ describe("Error Middleware", () => {
   });
 
   it("should handle known ErrorMessage correctly", () => {
-    const error = new ErrorMessage("Custom error", 400);
+    const error = new ErrorMessage("Custom error", 400, "testing");
 
     errorHandler(error, mockReq, mockRes, mockNext);
 
