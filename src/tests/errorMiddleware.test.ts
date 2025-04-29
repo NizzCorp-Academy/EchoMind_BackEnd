@@ -22,6 +22,7 @@ describe("Error Middleware", () => {
 
     expect(mockRes.status).toHaveBeenCalledWith(400);
     expect(mockRes.json).toHaveBeenCalledWith({
+      errorCode: "testing",
       status: "error",
       message: "Custom error",
     });
@@ -34,7 +35,8 @@ describe("Error Middleware", () => {
     expect(mockRes.status).toHaveBeenCalledWith(500);
     expect(mockRes.json).toHaveBeenCalledWith({
       status: "error",
-      message: "Internal Server Error",
+      message: "Internal server error",
+      log: "",
     });
   });
   it("should not call next()", () => {

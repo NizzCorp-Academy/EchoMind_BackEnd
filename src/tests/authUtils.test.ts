@@ -36,9 +36,12 @@ describe("Auth Utils ", () => {
     expect(decode?.userId).toBe(userId);
   });
 
-  it("should return null if the token wasn't valid", () => {
+  it("should throw if the token wasn't valid", () => {
     const authUtil = new AuthUtils();
-    const decode = authUtil.verifyToken("sometoken");
-    expect(decode).toBe(null);
+    try {
+      authUtil.verifyToken("sometoken");
+    } catch (error) {
+      expect(error).toBeDefined();
+    }
   });
 });

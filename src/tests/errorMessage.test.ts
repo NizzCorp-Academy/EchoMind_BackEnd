@@ -10,7 +10,7 @@ describe("ErrorMessage", () => {
   it("should initialize with default status code and operational flag", () => {
     const error = new ErrorMessage("Test error", 400, "testing");
     expect(error.message).toBe("Test error");
-    expect(error.statusCode).toBe(500);
+    expect(error.statusCode).toBe(400);
     expect(error.isOperational).toBe(true);
   });
   it("should be an instance of Error and ErrorMessage", () => {

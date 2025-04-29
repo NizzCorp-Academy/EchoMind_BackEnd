@@ -20,8 +20,8 @@ userRoutes.get(
   }
 );
 
-userRoutes.get("/set", (req: Request, res: Response, next: NextFunction) => {
-  const token = req.body;
+userRoutes.post("/set", (req: Request, res: Response, next: NextFunction) => {
+  const token = req.body.token;
   res
     .cookie("jwt", token, {
       httpOnly: true,

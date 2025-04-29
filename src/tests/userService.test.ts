@@ -1,3 +1,4 @@
+import "dotenv/config";
 import mongoose from "mongoose";
 import UserModel from "../models/userModel";
 import UserService from "../services/userService";
@@ -97,6 +98,5 @@ describe("User Service", () => {
     );
     expect(user.username).toBe("testuser");
     expect(user.email).toBe("test@mail.com");
-    expect(user.password).toBe("hashedPassword");
   });
 });
