@@ -13,6 +13,7 @@ import ChatController from "../controllers/chatController";
 import AuthMiddlewares from "../middlewares/authMiddleware";
 import ValidationMiddleware from "../middlewares/validationMiddleware";
 import { Request, Response, NextFunction } from "express";
+import { object } from "joi";
 
 const { chatvalidation, updatechatvalidation, delchatvalidation } =
     new ValidationMiddleware();
@@ -95,7 +96,8 @@ chatRoute.get(
     async (req: Request, res: Response, next: NextFunction) => {
         const { getAllChats } = new ChatController();
         const userId = req.userId;
-        const chats = await getAllChats(userId);
+        const ObjChats = await getAllChats(userId);
+        const chats =ObjChats.chats
         res.status(200).json({ status: "success", chats });
         next();
     }
