@@ -10,7 +10,7 @@
  */
 
 import { Request, Response, NextFunction } from "express";
-import ValidationJoi from "../utils/validationUtils";
+import ValidationJoi from "../utils/validationUtils.js";
 
 /**
  * @class ValidationMiddleware

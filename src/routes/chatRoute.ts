@@ -9,9 +9,9 @@
  */
 
 import { Router } from "express";
-import ChatController from "../controllers/chatController";
-import AuthMiddlewares from "../middlewares/authMiddleware";
-import ValidationMiddleware from "../middlewares/validationMiddleware";
+import ChatController from "../controllers/chatController.js";
+import AuthMiddlewares from "../middlewares/authMiddleware.js";
+import ValidationMiddleware from "../middlewares/validationMiddleware.js";
 import { Request, Response, NextFunction } from "express";
 
 const { chatvalidation, updatechatvalidation, delchatvalidation } =

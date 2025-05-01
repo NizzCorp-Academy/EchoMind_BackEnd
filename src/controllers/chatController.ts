@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import ChatService from "../services/chatService";
-import { ErrorMessage } from "../utils/errorMessasge";
-import MessageService from "../services/messageService";
-import PromptService from "../services/promptService";
+import ChatService from "../services/chatService.js";
+import { ErrorMessage } from "../utils/errorMessasge.js";
+import MessageService from "../services/messageService.js";
+import PromptService from "../services/promptService.js";
 
 /**
  * @class ChatController

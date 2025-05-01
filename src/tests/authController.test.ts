@@ -7,61 +7,63 @@ jest.mock("../services/userService");
 jest.mock("../utils/authUtil");
 
 describe("authController", () => {
-  
-  const mockUser = {
-    _id: "123abc",
-    username: "testuser",
-    email: "test@gmail.com",
-    password: "testpassword",
-  };
-  beforeEach(() => {
-    jest.clearAllMocks();
+    const mockUser = {
+        _id: "123abc",
+        username: "testuser",
+        email: "test@gmail.com",
+        password: "testpassword",
+    };
+    beforeEach(() => {
+        jest.clearAllMocks();
 
-    UserService.prototype.registerUser = jest.fn().mockResolvedValue(mockUser);
-    UserService.prototype.logninUser = jest.fn().mockResolvedValue(mockUser);
+        UserService.prototype.registerUser = jest
+            .fn()
+            .mockResolvedValue(mockUser);
+        UserService.prototype.logninUser = jest
+            .fn()
+            .mockResolvedValue(mockUser);
 
-    AuthUtils.prototype.createToken = jest.fn().mockReturnValue("mocked-token");
-  });
+        AuthUtils.prototype.createToken = jest
+            .fn()
+            .mockReturnValue("mocked-token");
+    });
 
-  it("should register user and return user object with token", async () => {
-    const authController = new AuthClass();
-    const user = await authController.register(
-      mockUser.username,
-      mockUser.email,
-      mockUser.password
-    );
-    await UserService.prototype.registerUser(
-      "testuser",
-      "test@gmail.com",
-      "testpassword"
-    );
+    it("should register user and return user object with token", async () => {
+        const authController = new AuthClass();
+        const user = await authController.register(
+            mockUser.username,
+            mockUser.email,
+            mockUser.password
+        );
+        await UserService.prototype.registerUser(
+            "testuser",
+            "test@gmail.com",
+            "testpassword"
+        );
 
-    const token =
-     AuthUtils.prototype.createToken("123abc");
+        const token = AuthUtils.prototype.createToken("123abc");
 
-    expect(user).toBeDefined();
-    expect(token).toBeDefined();
-  });
-  it("should Login user and return user object with token", async () => {
-    const authController = new AuthClass();
-    // const authUtils = new AuthUtils();
-    const user = await authController.login(
-      mockUser.email,
-      mockUser.password
-    );
-    await UserService.prototype.logninUser(
-      "test@gmail.com",
-      "testpassword"
-    );
+        expect(user).toBeDefined();
+        expect(token).toBeDefined();
+    });
+    it("should Login user and return user object with token", async () => {
+        const authController = new AuthClass();
+        // const authUtils = new AuthUtils();
+        const user = await authController.login(
+            mockUser.email,
+            mockUser.password
+        );
+        await UserService.prototype.logninUser(
+            "test@gmail.com",
+            "testpassword"
+        );
 
-    const token = AuthUtils.prototype.createToken("123abc");
+        const token = AuthUtils.prototype.createToken("123abc");
 
-    expect(user).toBeDefined();
-    expect(token).toBeDefined();
-  });
- 
+        expect(user).toBeDefined();
+        expect(token).toBeDefined();
+    });
 });
-
 
 // describe("AuthController", () => {
 //   describe("register", () => {
@@ -285,4 +287,3 @@ describe("authController", () => {
 //     );
 //   })
 // });
-

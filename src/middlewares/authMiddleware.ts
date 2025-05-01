@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import AuthUtils from "../utils/authUtil";
-import { ErrorMessage } from "../utils/errorMessasge";
+import AuthUtils from "../utils/authUtil.js";
+import { ErrorMessage } from "../utils/errorMessasge.js";
 
 /**
  * @author Jaseem

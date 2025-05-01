@@ -1,5 +1,5 @@
-import MessageService from "../services/messageService";
-import { ErrorMessage } from "../utils/errorMessasge";
+import MessageService from "../services/messageService.js";
+import { ErrorMessage } from "../utils/errorMessasge.js";
 
 /**
  * @class MessageController

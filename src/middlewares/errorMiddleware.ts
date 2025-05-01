@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { ErrorMessage } from "../utils/errorMessasge";
+import { ErrorMessage } from "../utils/errorMessasge.js";
 import Joi from "joi";
 
 /**
@@ -17,31 +17,31 @@ import Joi from "joi";
  * @param next The next middleware function in the Express pipeline.
  */
 export const errorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction
 ): void => {
-  console.log("from error handler", err);
-  if (err instanceof ErrorMessage) {
-    // Handle application-specific errors
-    res.status(err.statusCode).json({
-      status: "error",
-      errorCode: err.errorCode,
-      message: err.message,
-    });
-  } else if (err.isJoi === true) {
-    console.log("joi error");
-    // Handle unexpected errors
-    res.status(400).json({
-      status: "error",
-      message: err.message,
-    });
-  } else {
-    res.status(500).json({
-      status: "error",
-      message: "Internal server error",
-      log: "",
-    });
-  }
+    console.log("from error handler", err);
+    if (err instanceof ErrorMessage) {
+        // Handle application-specific errors
+        res.status(err.statusCode).json({
+            status: "error",
+            errorCode: err.errorCode,
+            message: err.message,
+        });
+    } else if (err.isJoi === true) {
+        console.log("joi error");
+        // Handle unexpected errors
+        res.status(400).json({
+            status: "error",
+            message: err.message,
+        });
+    } else {
+        res.status(500).json({
+            status: "error",
+            message: "Internal server error",
+            log: "",
+        });
+    }
 };

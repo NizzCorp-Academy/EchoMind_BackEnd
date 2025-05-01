@@ -1,7 +1,7 @@
 import { Router } from "express";
-import AuthMiddlewares from "../middlewares/authMiddleware";
-import MessageController from "../controllers/messageController";
-import ValidationMiddleware from "../middlewares/validationMiddleware";
+import AuthMiddlewares from "../middlewares/authMiddleware.js";
+import MessageController from "../controllers/messageController.js";
+import ValidationMiddleware from "../middlewares/validationMiddleware.js";
 import { Request, Response, NextFunction } from "express";
 
 const { authenticatedRoute } = new AuthMiddlewares();
