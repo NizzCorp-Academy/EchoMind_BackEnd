@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { ErrorMessage } from "../utils/errorMessasge.js";
 import Joi from "joi";
+import { logger } from "../utils/winstonLogger.js";
 
 /**
  * @author Muhammad Haseen
@@ -23,6 +24,14 @@ export const errorHandler = (
     next: NextFunction
 ): void => {
     console.log("from error handler", err);
+    
+    logger.error(`incoming request with ERROR ${req.method}, Endpoint is "${req.url}", error is ${err.message}`, {
+        method: req.method,
+        url: req.url,
+        query: req.query,
+       
+        ip: req.ip,
+    });
     if (err instanceof ErrorMessage) {
         // Handle application-specific errors
         res.status(err.statusCode).json({

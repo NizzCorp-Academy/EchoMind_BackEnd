@@ -28,3 +28,4 @@ export const AI_ENDPOIND = getEnv("AI_ENDPOIND");
 export const AI_MODEL = getEnv("AI_MODEL");
 export const NODE_ENV = getEnv("NODE_ENV");
 export const LOG_LEVEL = getEnv("LOG_LEVEL") || "info";
+export const FRONTEND_ENDPOINT = getEnv("FRONTEND_ENDPOINT") ;

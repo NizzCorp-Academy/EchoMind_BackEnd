@@ -10,7 +10,7 @@ const defaultConfig: LoggerConfig = {
     logDir: path.join(process.cwd(), "logs"),
     level: LOG_LEVEL,
     maxSize: "20m",
-    maxFiles: "1m",
+    maxFiles: "7d",
     datePattern: "YYYY-MM-DD-HH",
 };
 
