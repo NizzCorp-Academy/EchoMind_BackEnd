@@ -9,6 +9,7 @@ import authRoute from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import chatRoute from "./routes/chatRoute.js";
 import cors from "cors";
+import { logger } from "./utils/daily-logger.js";
 
 const app = express();
 
@@ -24,7 +25,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use((req, res, next) => {
-    console.log(req.ip, req.method, req.host, req.path);
+    // console.log(req.ip, req.method, req.host, req.path);
+    logger.info(`Incoming ${req.method} request to ${req.url}`, {
+        method: req.method,
+        url: req.url,
+        query: req.query,
+        body: req.body,
+        ip: req.ip,
+    });
+
     next();
 });
 app.use("/api/auth", authRoute);
