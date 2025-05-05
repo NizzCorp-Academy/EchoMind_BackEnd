@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import type { AggregatedResult, TestResult } from "@jest/test-result";
 import type { Reporter } from "@jest/reporters";
+import { LoggedError } from "../types/error.types";
 
 class AppendReporter implements Reporter {
     onRunComplete(
