@@ -12,7 +12,7 @@ import mongoose from "mongoose";
  * @property {Date} [createdAt] - The timestamp when the chat was created (auto-generated).
  * @property {Date} [updatedAt] - The timestamp when the chat was last updated (auto-generated).
  */
-export interface ChatDocument extends Document {
+export interface ChatDocument extends mongoose.Document {
     _id: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
     title: string;
