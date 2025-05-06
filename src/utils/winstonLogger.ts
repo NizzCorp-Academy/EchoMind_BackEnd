@@ -3,8 +3,8 @@ import "winston-daily-rotate-file";
 import path from "path";
 import fs from "fs";
 
-import { LoggerConfig } from "../types/log.types";
-import { LOG_LEVEL, NODE_ENV } from "./env";
+import { LoggerConfig } from "../types/log.types.js";
+import { LOG_LEVEL, NODE_ENV } from "./env.js";
 
 const defaultConfig: LoggerConfig = {
     logDir: path.join(process.cwd(), "logs"),

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest --verbose",
     "dev": "tsx --no-cache src/server.ts --verbose",
-    "start": "node dist/server.js "
+    "start": "node dist/server.js ",
+    "build" : "tsc"
   },
   "keywords": [],
   "author": "",
