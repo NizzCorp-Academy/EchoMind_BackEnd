@@ -1,12 +1,14 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "jest --verbose",
-    "start": "tsx --no-cache src/server.ts"
+    "dev": "tsx --no-cache src/server.ts --verbose",
+    "start": "node dist/server.js ",
+    "build" : "tsc"
   },
+  "bin": "dist/server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -22,11 +24,14 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.13.2",
     "ts-node": "^10.9.2",
-    "tsx": "^4.19.3"
+    "tsx": "^4.19.3",
+    "winston": "^3.17.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.1",
     "@types/jest": "^29.5.14",

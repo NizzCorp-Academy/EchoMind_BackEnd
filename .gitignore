@@ -1,3 +1,6 @@
 node_modules
 .env
 reports
+dist
+logs
+*.env

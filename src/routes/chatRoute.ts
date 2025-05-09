@@ -9,13 +9,14 @@
  */
 
 import { Router } from "express";
-import ChatController from "../controllers/chatController";
-import AuthMiddlewares from "../middlewares/authMiddleware";
-import ValidationMiddleware from "../middlewares/validationMiddleware";
+import ChatController from "../controllers/chatController.js";
+import AuthMiddlewares from "../middlewares/authMiddleware.js";
+import ValidationMiddleware from "../middlewares/validationMiddleware.js";
 import { Request, Response, NextFunction } from "express";
+import { object } from "joi";
 
 const { chatvalidation, updatechatvalidation, delchatvalidation } =
-  new ValidationMiddleware();
+    new ValidationMiddleware();
 const { authenticatedRoute } = new AuthMiddlewares();
 
 const chatRoute = Router();
@@ -27,18 +28,18 @@ const chatRoute = Router();
  * @controller chatCompleation - Controller method to handle the request.
  */
 chatRoute.post(
-  "/completion",
-  chatvalidation,
-  authenticatedRoute,
+    "/completion",
+    chatvalidation,
+    authenticatedRoute,
 
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { chatCompleation } = new ChatController();
-    const { prompt, chatId } = req.body;
-    const userId = req.userId;
-    const response = await chatCompleation(prompt, chatId, userId);
-    res.status(200).json({ status: "success", response });
-    next();
-  }
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { chatCompleation } = new ChatController();
+        const { prompt, chatId } = req.body;
+        const userId = req.userId;
+        const response = await chatCompleation(prompt, chatId, userId);
+        res.status(200).json({ status: "success", response });
+        next();
+    }
 );
 
 /**
@@ -49,16 +50,17 @@ chatRoute.post(
  * @controller editChat - Controller method to update a chat message.
  */
 chatRoute.put(
-  "/edit/:id",
-  updatechatvalidation,
-  authenticatedRoute,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { editChat } = new ChatController();
-    const { title, chatId } = req.body;
-    const chat = await editChat(chatId, title);
-    res.status(200).json({ status: "success", chat });
-    next();
-  }
+    "/edit/:id",
+    updatechatvalidation,
+    authenticatedRoute,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { editChat } = new ChatController();
+        const { id } = req.params;
+        const { title } = req.body;
+        const chat = await editChat(id, title);
+        res.status(200).json({ status: "success", chat });
+        next();
+    }
 );
 
 /**
@@ -69,17 +71,17 @@ chatRoute.put(
  * @controller deleteChat - Controller method to delete a chat message.
  */
 chatRoute.delete(
-  "/delete",
-  delchatvalidation,
-  authenticatedRoute,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { deleteChat } = new ChatController();
-    const { chatId } = req.body;
-    const userId = req.userId;
-    const chat = await deleteChat(userId, chatId);
-    res.status(200).json({ status: "success", chat });
-    next();
-  }
+    "/:id",
+    delchatvalidation,
+    authenticatedRoute,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { deleteChat } = new ChatController();
+        const { id } = req.params;
+        const userId = req.userId;
+        const chat = await deleteChat(userId, id);
+        res.status(200).json({ status: "success", chat });
+        next();
+    }
 );
 
 /**
@@ -89,15 +91,16 @@ chatRoute.delete(
  * @controller getAllChats - Controller method to fetch all chat records.
  */
 chatRoute.get(
-  "/getchat",
-  authenticatedRoute,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { getAllChats } = new ChatController();
-    const userId = req.userId;
-    const chats = await getAllChats(userId);
-    res.status(200).json({ status: "success", chats });
-    next();
-  }
+    "/getchat",
+    authenticatedRoute,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { getAllChats } = new ChatController();
+        const userId = req.userId;
+        const ObjChats = await getAllChats(userId);
+        const chats =ObjChats.chats
+        res.status(200).json({ status: "success", chats });
+        next();
+    }
 );
 
 export default chatRoute;

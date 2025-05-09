@@ -10,8 +10,8 @@
  */
 
 import { Router } from "express";
-import AuthClass from "../controllers/authController";
-import ValidationMiddleware from "../middlewares/validationMiddleware";
+import AuthClass from "../controllers/authController.js";
+import ValidationMiddleware from "../middlewares/validationMiddleware.js";
 import { Request, Response, NextFunction } from "express";
 
 const { registerValidation, loginValidation } = new ValidationMiddleware();
@@ -25,15 +25,15 @@ const authRoute = Router();
  * @controller register - Controller method that processes the registration.
  */
 authRoute.post(
-  "/register",
-  registerValidation,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { register } = new AuthClass();
-    const { username, email, password } = req.body;
-    const { user, token } = await register(username, email, password);
-    res.status(200).json({ status: "success", user, token });
-    next();
-  }
+    "/register",
+    registerValidation,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { register } = new AuthClass();
+        const { username, email, password } = req.body;
+        const { user, token } = await register(username, email, password);
+        res.status(200).json({ status: "success", user, token });
+        next();
+    }
 );
 
 /**
@@ -43,15 +43,15 @@ authRoute.post(
  * @controller login - Controller method that processes the login.
  */
 authRoute.post(
-  "/login",
-  loginValidation,
-  async (req: Request, res: Response, next: NextFunction) => {
-    const { login } = new AuthClass();
-    const { email, password } = req.body;
-    const { user, token } = await login(email, password);
-    res.status(200).json({ status: "success", user, token });
-    next();
-  }
+    "/login",
+    loginValidation,
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { login } = new AuthClass();
+        const { email, password } = req.body;
+        const { user, token } = await login(email, password);
+        res.status(200).json({ status: "success", user, token });
+        next();
+    }
 );
 
 export default authRoute;

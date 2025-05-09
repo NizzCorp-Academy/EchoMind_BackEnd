@@ -1,13 +1,5 @@
 import mongoose, { Document, model, Schema } from "mongoose";
-
-interface UserDocument extends Document {
-  _id: mongoose.Types.ObjectId;
-  username: string;
-  email: string;
-  password: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { UserDocument } from "../types/user.types";
 
 /**
  * @author: Jaseem
@@ -19,15 +11,19 @@ interface UserDocument extends Document {
  *
  */
 const userSchema = new Schema<UserDocument>(
-  {
-    _id: { type: mongoose.Schema.Types.ObjectId, required: true, auto: true },
-    username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-  },
-  {
-    timestamps: true,
-  }
+    {
+        _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
+            auto: true,
+        },
+        username: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+    },
+    {
+        timestamps: true,
+    }
 );
 
 const UserModel = model<UserDocument>("User", userSchema);

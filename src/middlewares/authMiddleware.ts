@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import AuthUtils from "../utils/authUtil";
-import { ErrorMessage } from "../utils/errorMessasge";
+import AuthUtils from "../utils/authUtil.js";
+import { ErrorMessage } from "../utils/errorMessasge.js";
 
 /**
  * @author Jaseem
@@ -15,19 +15,20 @@ import { ErrorMessage } from "../utils/errorMessasge";
  * @return this funciton will return the req obj with the userId as the jwt payload
  */
 class AuthMiddlewares {
-  authenticatedRoute(req: Request, res: Response, next: NextFunction) {
-    const authUtils = new AuthUtils();
-    if (!req.cookies.jwt) {
-      throw new ErrorMessage("token is not Provided", 400, "a-mdlw-01");
+    authenticatedRoute(req: Request, res: Response, next: NextFunction) {
+        const authUtils = new AuthUtils();
+        if (!req.cookies.jwt) {
+            throw new ErrorMessage("token is not Provided", 400, "a-mdlw-01");
+        }
+        // const { token } = req.cookies.jwt;
+        const { jwt: token } = req.cookies;
+        const decode = authUtils.verifyToken(token);
+        // if (decode === null) {
+        // throw new Error("invalid token");
+        // }
+        req.userId = decode.userId;
+        next();
     }
-    const { token } = req.cookies.jwt;
-    const decode = authUtils.verifyToken(token);
-    // if (decode === null) {
-    // throw new Error("invalid token");
-    // }
-    req.userId = decode.userId;
-    next();
-  }
 }
 
 export default AuthMiddlewares;

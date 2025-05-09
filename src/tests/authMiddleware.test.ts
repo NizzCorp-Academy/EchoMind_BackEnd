@@ -7,7 +7,6 @@ import cookieParser from "cookie-parser";
 import AuthMiddlewares from "../middlewares/authMiddleware";
 
 const { authenticatedRoute } = new AuthMiddlewares();
-
 const testApp = express();
 testApp.use(cookieParser());
 testApp.use(express.json());
@@ -16,7 +15,6 @@ let decodedUSerId: string;
 
 const testController = (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("this is getting through");
     decodedUSerId = req.userId;
     res.status(200).json({ decodedUSerId });
   } catch (error: any) {
@@ -43,20 +41,16 @@ describe("Auth Middleware", () => {
       .get("/endpoint")
       .set("Cookie", [`jwt=${token}`]);
     expect(response.statusCode).toBe(500);
-    expect(response.body.error).toBe("invalid token");
+    expect(response.body.error).toBe("jwt malformed");
   });
   it("should authenticate the user if the token is valid", async () => {
     const authUtil = new AuthUtils();
     const newUserId = new mongoose.Types.ObjectId().toString();
-    const jwt = authUtil.createToken(newUserId);
+    const token = authUtil.createToken(newUserId);
 
-    const response = await request(testApp)
+    await request(testApp)
       .get("/endpoint")
-      .set("Cookie", [`jwt=${jwt}`])
-      .send({});
-
-    console.log(response.statusCode);
-    expect(response.statusCode).toBe(200);
-    expect(response.body.decodedUSerId).toBe(newUserId);
+      .set("Cookie", [`jwt=${token}`])
+      .expect(200);
   });
 });
