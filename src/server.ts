@@ -23,13 +23,12 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(loggerMiddleware)
+app.use(loggerMiddleware);
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoute);
 app.use("/api/message", messageRoute);
-
 
 app.use((req, res, next) => {
     try {
@@ -47,7 +46,7 @@ process.on("unhandledRejection", (reason, promise) => {
     // Perform cleanup and exit process if necessary
 });
 
-app.listen(5000, () => {
+app.listen(PORT, "0.0.0.0", () => {
     const { connectDB } = new DbConnection();
     connectDB();
     console.log(`Server is running on port http://localhost:${PORT}`);
