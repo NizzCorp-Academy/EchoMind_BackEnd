@@ -1,0 +1,36 @@
+# Start with MongoDB
+FROM mongo:latest AS mongodb
+
+# Add Node.js
+FROM node:20.18.3-alpine3.21
+
+# Install MongoDB
+COPY --from=mongodb /usr/bin/mongod /usr/bin/mongod
+COPY --from=mongodb /usr/bin/mongosh /usr/bin/mongosh
+
+# Set working directory
+WORKDIR /app
+
+# Copy application files
+COPY package*.json ./
+COPY tsconfig.json ./
+COPY src/ ./src/
+COPY .env ./.env
+
+# Install dependencies and build
+RUN npm install && \
+    npm run build && \
+    npm prune --production
+
+# Create MongoDB data directory
+RUN mkdir -p /data/db
+
+# Copy startup script
+COPY start-services.sh /start-services.sh
+RUN chmod +x /start-services.sh
+
+# Expose ports
+EXPOSE 5000 27017 8081
+
+# Start all services
+CMD ["/start-services.sh"]

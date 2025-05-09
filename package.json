@@ -2,13 +2,13 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "jest --verbose",
     "dev": "tsx --no-cache src/server.ts --verbose",
     "start": "node dist/server.js ",
     "build" : "tsc"
   },
+  "bin": "dist/server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
