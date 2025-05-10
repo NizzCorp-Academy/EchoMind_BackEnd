@@ -8,14 +8,9 @@ RUN chown -R limiteduser:limiteduser /app/logs
 
 COPY package*.json ./
 COPY tsconfig.json ./
-
-# COPY node_modules/ ./node_modules/
-
 RUN npm ci 
 
-
 COPY src/ ./src/
-
 RUN npm run build
 
 EXPOSE 5000
@@ -28,14 +23,21 @@ ENV NODE_ENV=production \
     FRONTEND_ENDPOINT=http://localhost:5173 
 
 
-RUN npm i pkg 
-RUN npx pkg . --targets node18-linux-x64
+# Create executable
+RUN npm i pkg && \
+    npx pkg . --targets node18-linux-x64
 
-FROM scratch AS builder
+
+
+# FROM scratch AS builder
+
+# # this is the executable file
+
+# COPY --from=base ./backend ./
 
 # COPY --from=base dist/ ./dist/
 # COPY --from=base node_modules/ ./node_modules/
 # COPY --from=base package*.json ./
-COPY --from=base backend/ ./
+
 
 CMD [ "./backend" ]
