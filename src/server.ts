@@ -10,8 +10,25 @@ import userRoutes from "./routes/userRoutes.js";
 import chatRoute from "./routes/chatRoute.js";
 import cors from "cors";
 import loggerMiddleware from "./middlewares/loggerMiddleware.js";
+import { rateLimit } from "express-rate-limit";
 
 const app = express();
+
+const customlimiter = rateLimit({
+    windowMs: 60 * 1000, // 15 minutes
+    limit: 5, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    standardHeaders: "draft-8", // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    // store: ... , // Redis, Memcached, etc. See below.
+});
+
+// const limiter = rateLimit({
+//     windowMs: 30 * 1000, // 15 minutes
+//     limit: 5, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+//     standardHeaders: "draft-8", // draft-6: `RateLimit-*` headers; draft-7 & draft-8: combined `RateLimit` header
+//     legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+//     // store: ... , // Redis, Memcached, etc. See below.
+// });
 
 app.use(
     cors({
@@ -20,16 +37,16 @@ app.use(
     })
 );
 
+// app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(loggerMiddleware)
+app.use(loggerMiddleware);
 
-app.use("/api/auth", authRoute);
+app.use("/api/auth", customlimiter, authRoute);
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoute);
 app.use("/api/message", messageRoute);
-
 
 app.use((req, res, next) => {
     try {
