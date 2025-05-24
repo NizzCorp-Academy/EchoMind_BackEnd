@@ -2,8 +2,8 @@ version: '3.8'
 
 services:
   backend:
-    # image: ${DOCKER_REGISTRY-}echomind-backend:latest
-    image: jaseem000/echomind-backend:latest
+    image: ${DOCKER_REGISTRY-}testing-exec:latest
+    # image: jaseem000/echomind-backend:latest
     ports:
       - "5000:5000"
     environment:
@@ -18,14 +18,14 @@ services:
       - MONGO_PASSWORD
       - MONGO_URI
       - MONGO_USERNAME
-    volumes:
-      - ./docker-entrypoint.sh:/docker-entrypoint.sh
+    # volumes:
+    #   - ./docker-entrypoint.sh:/docker-entrypoint.sh
     secrets:
       - JWT_SECRET
       - MONGO_PASSWORD
       - MONGO_URI
       - MONGO_USERNAME
-    entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
+    # entrypoint: ["/bin/sh", "/docker-entrypoint.sh"]
     command: ["node", "dist/server.js"]
     deploy:
       replicas: 1

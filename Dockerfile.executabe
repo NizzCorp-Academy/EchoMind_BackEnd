@@ -1,41 +1,44 @@
-FROM node:20.18.3-bookworm-slim AS base
+# FROM node:20.18.3-bookworm-slim AS builder
 
-LABEL org.opencontainers.image.title="Echomind backend app"
+# LABEL org.opencontainers.image.title="Echomind backend app"
 
-RUN useradd -u 1006 limiteduser
-RUN mkdir -p app/logs
-RUN chown -R limiteduser:limiteduser /app/logs
+# RUN useradd -u 1006 limiteduser
+# RUN mkdir -p app/logs
+# RUN chown -R limiteduser:limiteduser /app/logs
 
-COPY package*.json ./
-COPY tsconfig.json ./
+# COPY package*.json ./
+# COPY tsconfig.json ./
+# RUN npm ci 
 
-# COPY node_modules/ ./node_modules/
+# COPY src/ ./src/
+# RUN npm run build
 
-RUN npm ci 
+# EXPOSE 5000
 
-
-COPY src/ ./src/
-
-RUN npm run build
-
-EXPOSE 5000
-
-ENV NODE_ENV=production \
-    PORT=5000 \
-    AI_ENDPOIND=http://localhost:1234/v1 \
-    AI_MODEL=e1 \
-    LOG_LEVEL=info \
-    FRONTEND_ENDPOINT=http://localhost:5173 
+# ENV NODE_ENV=production \
+#     PORT=5000 \
+#     AI_ENDPOIND=http://localhost:1234/v1 \
+#     AI_MODEL=e1 \
+#     LOG_LEVEL=info \
+#     FRONTEND_ENDPOINT=http://localhost:5173 
 
 
-RUN npm i pkg 
-RUN npx pkg . --targets node18-linux-x64
+# # Create executable
+# RUN npm i pkg && \
+#     npx pkg . --targets node18-linux-x64
 
-FROM scratch AS builder
+# FROM baseImage
+
+FROM scratch AS runner  
+
+# this is the executable file
+
+# COPY --from=0 /backend /backend
+COPY backend /backend
 
 # COPY --from=base dist/ ./dist/
 # COPY --from=base node_modules/ ./node_modules/
 # COPY --from=base package*.json ./
-COPY --from=base backend/ ./
 
-CMD [ "./backend" ]
+
+CMD [ "ls" ]
