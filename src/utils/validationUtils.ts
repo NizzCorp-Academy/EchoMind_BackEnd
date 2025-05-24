@@ -54,7 +54,7 @@ class ValidationJoi {
      * - `title`: A string between 3 and 50 characters (optional).
      */
     updateChatSchema = Joi.object({
-        chatId: Joi.string().required(),
+        chatId: Joi.string().min(3).required(),
         title: Joi.string().min(3).max(50).required(),
     });
 
