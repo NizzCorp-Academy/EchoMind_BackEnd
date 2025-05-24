@@ -1,4 +1,5 @@
 # EchoMind
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/df1d559e44a34c37bfe3d6b9f0795db8)](https://app.codacy.com/gh/NizzCorp-Academy/EchoMind_BackEnd/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 EchoMind is an intelligent chat application built to revolutionize customer support with the power of AI. Fine-tuned specifically for handling support-related conversations, EchoMind delivers fast, accurate, and human-like responses tailored to your business needs.
 
