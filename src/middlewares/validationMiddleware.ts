@@ -23,9 +23,11 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async registerValidation(req: Request, res: Response, next: NextFunction) {
+    registerValidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
-        validate.registerSchema.validateAsync(req.body);
+        const { error } = validate.registerSchema.validate(req.body);
+        if (error) next(error);
+
         next();
     }
 
@@ -35,9 +37,10 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async loginValidation(req: Request, res: Response, next: NextFunction) {
+    loginValidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
-        await validate.loginSchema.validateAsync(req.body);
+        const { error } = validate.loginSchema.validate(req.body);
+        if (error) next(error);
         next();
     }
 
@@ -47,10 +50,14 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async chatvalidation(req: Request, res: Response, next: NextFunction) {
+    chatvalidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
         const { prompt, chatId } = req.body;
-        await validate.createChatSchema.validateAsync({ prompt, chatId });
+        const { error } = validate.createChatSchema.validate({
+            prompt,
+            chatId,
+        });
+        if (error) next(error);
         next();
     }
 
@@ -60,15 +67,15 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async updatechatvalidation(
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) {
+    updatechatvalidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
-        const { id: chatId } = req.params;
+        const { id } = req.params;
         const { title } = req.body;
-        await validate.updateChatSchema.validateAsync({ chatId, title });
+        const { error, value } = validate.updateChatSchema.validate({
+            chatId: id,
+            title,
+        });
+        if (error) next(error);
         next();
     }
 
@@ -78,10 +85,11 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async delchatvalidation(req: Request, res: Response, next: NextFunction) {
+    delchatvalidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
         const { id: chatId } = req.params;
-        await validate.deleteChatSchema.validateAsync({ chatId });
+        const { error } = validate.deleteChatSchema.validate({ chatId });
+        if (error) next(error);
         next();
     }
 
@@ -91,14 +99,11 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async getmessagevalidation(
-        req: Request,
-        res: Response,
-        next: NextFunction
-    ) {
+    getmessagevalidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
         const { id: chatId } = req.params;
-        await validate.getAllMessagesSchema.validateAsync({ chatId });
+        const { error } = validate.getAllMessagesSchema.validate({ chatId });
+        if (error) next(error);
         next();
     }
 
@@ -108,10 +113,11 @@ class ValidationMiddleware {
      * @param res - Express Response object.
      * @param next - Express NextFunction callback.
      */
-    async messageidvalidation(req: Request, res: Response, next: NextFunction) {
+    messageidvalidation(req: Request, res: Response, next: NextFunction) {
         const validate = new ValidationJoi();
         const { id } = req.params;
-        await validate.messageIdSchema.validateAsync({ id });
+        const { error } = validate.messageIdSchema.validate({ id });
+        if (error) next(error);
         next();
     }
 }
