@@ -64,7 +64,7 @@ process.on("unhandledRejection", (reason, promise) => {
     // Perform cleanup and exit process if necessary
 });
 
-app.listen(5000, () => {
+app.listen(PORT, "0.0.0.0", () => {
     const { connectDB } = new DbConnection();
     connectDB();
     console.log(`Server is running on port http://localhost:${PORT}`);
