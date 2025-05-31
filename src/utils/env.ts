@@ -7,13 +7,19 @@
  * @throws - If the environment variable is not set, it throws an error and exits the process.
  * @example - getEnv("PORT") // returns the value of the PORT environment variable
  */
+import fs from "fs";
 export const getEnv = (name: string) => {
     try {
         const env = process.env[name];
-        if (!env) {
+        if (env) {
+            return env;
+        }
+        const path = `run/secrets/${name}`;
+        const secret = fs.readFileSync(path, "utf8").trim();
+        if (!env && !secret) {
             throw new Error(`Environment variable ${name} is not set`);
         }
-        return env;
+        return secret;
     } catch (error) {
         console.error(error);
         // throw error
